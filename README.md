@@ -11,3 +11,10 @@ To utilize the YPOD_V3.2.0 firmware, you need to:
      RTClib.cpp
      RTC_DS3231.h
      RTC_DS3231.cpp
+
+| Version       | Pilot         | Date               | Description & Purpose                  |
+| ------------- | ------------- | -------------      | -------------------------------------- |
+| V3.1.2        | Percy         | March 19, 2024     | Corrects RTClib Version                |
+| V3.2.0        | Percy         | June 28, 2024      | Moves RTC firmware to central firmware |
+|               |               |                    | Removes bug in SD write with pull LOW  |
+|               |               |                    | Removes GPS code (unusable due to HW)  |
