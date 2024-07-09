@@ -1,0 +1,5 @@
+SdFat@2.2.3
+RTClib@2.1.4
+Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
+Adafruit_ADS1X15@2.5.0 (ads_module.h)
+MCP342x@1.0.4 (quad_module.h)
