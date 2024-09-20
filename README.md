@@ -36,5 +36,5 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 |               |                |               |                    | Moved clunky functions to .h/.cpp      |
 |               |                |               |                    | Added YPOD_node.h for setting/config   |
 | V3.4.4        | RETIGO LiveVis | Percy         | September 9, 2024  | Changes how serial montior writes      |
-|               |                |               |                    | Works with [MATLAB Live V2 ]([url](https://github.com/HanniganAirQuality/YPOD_LiveDataViz))	       |
+|               |                |               |                    | Works with [[MATLAB Live V2 ]]([url](https://github.com/HanniganAirQuality/YPOD_LiveDataViz))	       |
 | V3.4.5        | RTC Config Set | Percy         | September 20, 2024 | Adds a RTC_ADJUST config var           |
