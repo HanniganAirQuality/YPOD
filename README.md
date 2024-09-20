@@ -23,6 +23,7 @@ To utilize the most recent firmware, you need to:
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
+
 MUST USE V3.4.4+ YPOD FIRMWARE
 
 # Update Tracker
