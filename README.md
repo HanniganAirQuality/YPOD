@@ -2,7 +2,7 @@
 The YPOD is a low-cost air quality monitor that we use for outreach in Project-Based Learning in Rural Schools at CU Boulder.
 
 # Using this Firmware
-To utilize the YPOD_V3.4.3 firmware, you need to:
+To utilize the most recent firmware, you need to:
 1. Move all un-zipped libraries into your your Documents/Arduino/libraries folder on your computer
 	SdFat@2.2.3
 	RTClib@2.1.4
