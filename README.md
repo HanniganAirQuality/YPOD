@@ -35,4 +35,5 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 |               |                |               |                    | Made RTC timestamps (not sep anymore)  |
 |               |                |               |                    | Moved clunky functions to .h/.cpp      |
 |               |                |               |                    | Added YPOD_node.h for setting/config   |
-
+| V3.4.4        | RETIGO LiveVis | Percy         | September 9, 2024  | Changes how serial montior writes      |
+|               |                |               |                    | Works with MATLAB Live V2 	       |
