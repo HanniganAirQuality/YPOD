@@ -9,7 +9,7 @@ To utilize the most recent firmware, you need to:
 	Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
 	Adafruit_ADS1X15@2.5.0 (ads_module.h)
 	MCP342x@1.0.4 (quad_module.h)
-2. Ensure that your YPOD_V3.2.0 folder includes:
+2. Ensure that your YPOD_V3.4.3 folder includes:
 	YPOD_V3.4.3.ino
 	YPOD_node.h
 	ads_module.cpp
