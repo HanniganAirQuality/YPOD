@@ -160,6 +160,9 @@ int Cal::calibrate_co (uint16_t co, float rh) {
       Serial.println("No CO calibration data for this pod.");
       co_cal = co; // Default = original signal 
   }
+  if (co_cal < 0) { // conditional for negative values
+    co_cal = 0;
+  }
   return co_cal;
 }
 
