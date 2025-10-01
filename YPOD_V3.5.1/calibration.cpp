@@ -136,9 +136,6 @@ int Cal::calibrate_co (uint16_t co, float rh) {
         case '4':
           co_cal = ((0.00105 * co) + (-0.14761 * rh) + 4.78947) * 1000;
           break;
-        case '1':
-          co_cal = ((0.01298 * co) + (-0.07268 * rh) - 21.18629) * 1000;
-          break;
         case '6':
           co_cal = ((0.00112 * co) + (-0.07675 * rh) + 1.95190) * 1000;
           break;
