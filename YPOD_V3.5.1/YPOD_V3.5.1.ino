@@ -1,7 +1,7 @@
 /*********************************************************************************
  * @project HAQ Lab YPOD
  *
- * @file    YPOD_V3.5.0.ino
+ * @file    YPOD_V3.5.1.ino
  * @author  Percy Smith
  * @author  Chiara Pesce
  * @brief   Central firmware to collect data through the YPOD
