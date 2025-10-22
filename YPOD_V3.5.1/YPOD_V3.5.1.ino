@@ -6,7 +6,7 @@
  * @author  Chiara Pesce
  * @brief   Central firmware to collect data through the YPOD
  * 
- * @date    September 30, 2025
+ * @date    October 22, 2025
  * @version V3.5.1
  * @log     Works with the live data visualization tool
  *          Changes the serial logging mech & decreases the delays\
@@ -271,7 +271,7 @@ void loop()
 
       // CO
       #if CALIBRATE // Calls calibraiton eqn for CO
-        int tempco = cal.calibrate(ads_data.CO, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_; // Temp variable to store object
+        float tempco = cal.calibrate(ads_data.CO, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_; // Temp variable to store object
         file.print(tempco); 
       #else
         file.print(ads_data.CO); // Default - no calibration
@@ -419,7 +419,7 @@ void loop()
 
     // CO
     #if CALIBRATE // Calls calibraiton eqn for CO
-      int tempco = cal.calibrate(ads_data.CO, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_; // Temp variable to store object
+      float tempco = cal.calibrate(ads_data.CO, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_; // Temp variable to store object
       Serial.print(tempco); 
     #else
       Serial.print(ads_data.CO); // Default - no calibration
