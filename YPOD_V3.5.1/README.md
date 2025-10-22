@@ -48,4 +48,4 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 |				|		 		 |               |                    | CO, CO2, Temperature and RH eqns       |
 | V3.5.1		| VOC Cal		 | Chiara        | September 20, 2025 | Adds co, co2, t, rh cals for some pods |
 |				|				 |				 |					  | VOC cal for TVOC, negative val fix     |
-
+|				|				 |				 |					  | CO in PPM, changed to float type	   |
