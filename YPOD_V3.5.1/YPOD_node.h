@@ -5,6 +5,8 @@
  * @author  Percy Smith, percy.smith@colorado.edu
  * @author  Chiara Pesce, chiara.pesce@colorado.edu
  * @date    July 31, 2025
+ * 
+ * FOR AQIQ RE-UPLOAD PMS_ENABLED = 1, BME180 = 0, SHT25 = 1 & MISC2611 = 1
 ******************************************************************************/
 #ifndef _YPOD_NODE_H
 #define _YPOD_NODE_H
@@ -35,7 +37,7 @@ const int PM_TX = 3;
 // SD Card Settings
 #define SD_CS         4
 
-const char ypodID[] = "YPODU8";
+const char ypodID[] = "YPODF4";
 
 #if CALIBRATE
   const char calID_letter = ypodID[4]; // Letter for calID
