@@ -35,7 +35,7 @@ const int PM_TX = 3;
 //SD Card Settings
 #define SD_CS         4
 
-const char ypodID[] = "YPODU8";
+const char ypodID[] = "YPODX9";
 
 #if CALIBRATE
   const char calID_letter = ypodID[4]; // Letter for calID
