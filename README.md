@@ -23,7 +23,7 @@ To utilize the most recent firmware, you need to:
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
-MUST USE V3.5.1 (pre 01/20/2026 FW upload) OR V4.0.0 (post 01/20/2026 FW upload)
+MUST USE V3.5.1 (pre 01/20/2026 FW upload) OR V4.0.1 (post 01/20/2026 FW upload)
 
 # Update Tracker
 Thanks to Izzy for this suggestion! Here we will be tracking each version of the firmware.
@@ -49,3 +49,4 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 |				|				 |				 |					  | VOC cal for TVOC, negative val fix     |
 |				|				 |				 |					  | CO in PPM, changed to float type	   |
 | V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
+| V4.0.1		| PM Error Fix   | Percy         | January 20, 2026   | Replaces text error for MATLAB LV |
