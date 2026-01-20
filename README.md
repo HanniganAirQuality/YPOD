@@ -9,13 +9,13 @@ To utilize the most recent firmware, you need to:
 	Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
 	Adafruit_ADS1X15@2.5.0 (ads_module.h)
 	MCP342x@1.0.4 (quad_module.h)
-2. Ensure that your YPOD_V3.4.3 folder includes:
-	YPOD_V3.4.3.ino
+2. Ensure that your YPOD_Vx.x.x folder includes:
+	YPOD_Vx.x.x.ino
 	YPOD_node.h
 	ads_module.cpp
 	ads_module.h
-	plantower_module.cpp
-	plantower_module.h
+	plantower_module.cpp OR PMS.cpp
+	plantower_module.h OR PMS.h
 	quad_module.cpp
 	quad_module.h
 	SFE_BMP180.cpp
@@ -23,8 +23,7 @@ To utilize the most recent firmware, you need to:
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
-
-MUST USE V3.4.4+ YPOD FIRMWARE
+MUST USE V3.5.1 (pre 01/20/2026 FW upload) OR V4.0.0 (post 01/20/2026 FW upload)
 
 # Update Tracker
 Thanks to Izzy for this suggestion! Here we will be tracking each version of the firmware.
