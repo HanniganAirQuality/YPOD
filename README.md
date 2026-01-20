@@ -49,3 +49,4 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V3.5.1		| VOC Cal		 | Chiara        | September 20, 2025 | Adds co, co2, t, rh cals for some pods |
 |				|				 |				 |					  | VOC cal for TVOC, negative val fix     |
 |				|				 |				 |					  | CO in PPM, changed to float type	   |
+| V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
