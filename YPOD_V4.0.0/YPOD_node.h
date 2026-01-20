@@ -19,7 +19,7 @@
 #define PMS_ENABLED           1
 #define QUAD_ENABLED          0 
 
-#define RTC_UPDATE            0 // IF you have to update RTC, please upload after with a 0
+#define RTC_UPDATE            1 // IF you have to update RTC, please upload after with a 0
 
 #define INCLUDE_HEATERS       0
 #define INCLUDE_STANDARD      0
@@ -27,7 +27,7 @@
 
 #define BME180      0
 #define SHT25       1
-#define BME680      0 //NOT WRITTEN
+// #define BME680      0 //NOT WRITTEN
 #define MISC2611    1 // Ozone sensor
 
 const int PM_RX = 2;
