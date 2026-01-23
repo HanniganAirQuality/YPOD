@@ -65,6 +65,9 @@ int Cal::calibrate_co (uint16_t co, float rh) {
         case '3':
           co_cal = ((0.00093 * co) + (-0.07671 * rh) + 2.07106);
           break;
+        case '6':
+          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+          break;
         default:
           co_cal = co; // Default = original signal
       }
