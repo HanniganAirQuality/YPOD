@@ -132,6 +132,7 @@ void loop() {
     } else {
       pm_returned = false;
     } //if (pms.readUntil(pms_data)) 
+    pmsSerial.flush();
     delay(100);
   #endif 
  
