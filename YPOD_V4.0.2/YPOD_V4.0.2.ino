@@ -8,7 +8,7 @@
  * 
  * @date    March 3, 2026
  * @version V4.0.2
- * @log     Fixes timing issue by notifying pm sensor is passivemode..... (yes that's it.......)
+ * @log     Hoping to fix timing issues.... 
 ***********************************************************************************/
 /*  Libraries  */
 #include <Arduino.h>          
@@ -77,7 +77,7 @@ void setup() {
   #endif  //SERIAL_ENABLED
   #if PMS_ENABLED
     pmsSerial.begin(9600);
-    delay(500);
+    delay(100);
     pms.passiveMode();
   #endif //PMS_ENABLED
   //Central Firmware (comms protocols)
@@ -132,6 +132,7 @@ void loop() {
     } else {
       pm_returned = false;
     } //if (pms.readUntil(pms_data)) 
+    pmsSerial.flush();
     delay(100);
   #endif 
  
@@ -139,7 +140,6 @@ void loop() {
     qs_data = quad_module.return_data();
   #endif
 
-  delay(100);
   #if SHT25
     const byte temp_command = B11100011;
     const byte hum_command = B11100101;
@@ -147,8 +147,8 @@ void loop() {
     humidity_board = read_wire(hum_command);
     float humidity_SHT25 = ((125 * (float)humidity_board) / (65536)) - 6.00;
     float temperature_SHT25 = ((175.72 * (float)temperature_board) / (65536)) - 46.85;
+    delay(100);
   #endif  //SHT25
-  delay(100);
 
   #if BME180
   //Get BMP data
@@ -172,8 +172,8 @@ void loop() {
     T = -99;
     P = -99;
   } //if (status != 0) outer loop?
-  #endif  //BME180
   delay(100);
+  #endif  //BME180
 
   float CO2 = getS300CO2();
   delay(100);
@@ -190,14 +190,14 @@ void loop() {
     sd.begin(SD_CS);
   }
 
-  delay(100);
   DateTime now = RTC.now();
   Y = now.year();  M = now.month();  D = now.day();  h = now.hour();  m = now.minute();  s = now.second();
+  delay(100);
   sprintf(bufftime, "%04u-%02u-%02uT%02u:%02u:%02u", Y, M, D, h, m, s);
 
   if (sd.begin(SD_CS)) {
     // FILE FORMAT = RETIGO
-    delay(100);
+    // delay(100);
     file.open(fileName, O_CREAT | O_APPEND | O_WRITE); 
     delay(100);
     if(file.isOpen())
@@ -220,8 +220,8 @@ void loop() {
         file.print(",");
         file.print(P);
         file.print(",");
+        delay(100);
       #endif  //BME180
-      delay(100);
 
       #if SHT25
         // Temeprature
@@ -250,19 +250,15 @@ void loop() {
         file.print(tvoc);
       #endif 
       file.print(",");
-      delay(100);
       file.print(ads_data.Fig1); //Right slot - 2600
       file.print(",");
-      delay(100);
       file.print(ads_data.Fig2); //Left slot - 2602
       file.print(",");
-      delay(100);
 
       // Ozone
       #if MISC2611 // Conditional for ozone sensor
         file.print(ads_data.e2V);
         file.print(",");
-        delay(100);
       #endif
 
       // CO
@@ -272,8 +268,8 @@ void loop() {
       #else
         file.print(ads_data.CO); // Default - no calibration
       #endif
-      file.print(",");
       delay(100);
+      file.print(",");
 
       // CO2
       #if CALIBRATE // Calls calibration eqn for CO2
@@ -289,13 +285,10 @@ void loop() {
         if(pm_returned) {
           file.print(pms_data.pm10_env);
           file.print(F(","));
-          delay(100);
           file.print(pms_data.pm25_env);
           file.print(F(","));
-          delay(100);
           file.print(pms_data.pm100_env);
           file.print(F(","));
-          delay(100);
           #if INCLUDE_STANDARD
             file.print(pms_data.pm10_standard);
             file.print(F(","));
@@ -306,7 +299,7 @@ void loop() {
           #else
             file.print(F(",,,"));
           #endif //INCLUDE_STANDARD
-          delay(100);
+          // delay(100);
           #if INCLUDE_PARTICLES
             if(pms_data.hasParticles) {
               file.print(pms_data.particles_03um);
@@ -325,7 +318,7 @@ void loop() {
           #else 
             file.print(F(",,,,,,"));
           #endif  //INCLUDE_PARTICLES
-          delay(100);
+          // delay(100);
         } else {
           file.print(F(",,,,,,,,,,,,"));
         } //if(pm_returned)
@@ -354,7 +347,7 @@ void loop() {
       delay(100);
       file.sync();
       file.close();
-      delay(100);
+      // delay(100);
     }    else    {
       Serial.println("file not opening?");
       file.close();
@@ -410,19 +403,15 @@ void loop() {
       Serial.print(tvoc);
     #endif
     Serial.print(",");
-    delay(100);
     Serial.print(ads_data.Fig1);
     Serial.print(",");
-    delay(100);
     Serial.print(ads_data.Fig2);
     Serial.print(",");
-    delay(100);
 
     // Ozone
     #if MISC2611
       Serial.print(ads_data.e2V);
       Serial.print(",");
-      delay(100);
     #endif
 
     // CO
@@ -432,8 +421,8 @@ void loop() {
     #else
       Serial.print(ads_data.CO); // Default - no calibration
     #endif
-    Serial.print(",");
     delay(100);
+    Serial.print(",");
 
     // CO2
     #if CALIBRATE // Calls calibration eqn for CO2
@@ -442,19 +431,16 @@ void loop() {
     #else
       Serial.print(CO2); // Default - no calibration
     #endif
-    Serial.print(",");
     delay(100);
+    Serial.print(",");
   #if PMS_ENABLED
     if(pm_returned){
       Serial.print(pms_data.pm10_env);
       Serial.print(F(","));
-      delay(100);
       Serial.print(pms_data.pm25_env);
       Serial.print(F(","));
-      delay(100);
       Serial.print(pms_data.pm100_env);
       Serial.print(F(","));
-      delay(100);
       #if INCLUDE_STANDARD
         Serial.print(pms_data.pm10_standard);
         Serial.print(F(","));
@@ -463,7 +449,6 @@ void loop() {
         Serial.print(pms_data.pm100_standard);
         Serial.print(F(","));
       #endif //INCLUDE_STANDARD
-      delay(100);
       #if INCLUDE_PARTICLES
         if(pms_data.hasParticles) {
           Serial.print(pms_data.particles_03um);
@@ -480,7 +465,6 @@ void loop() {
           Serial.print(F(","));
         } //if(pms_data.hasParticles)
       #endif  //INCLUDE_PARTICLES
-      delay(100);
       
     } else {
       // Serial.print(F("Error reaching PMS5003")); //THIS FREAKS OUT THE SERIAL MONITOR 
@@ -507,6 +491,7 @@ void loop() {
     #endif //QS_ENABLED
     Serial.write(13);
     Serial.write(10);
+    Serial.flush();
   #endif  //SERIAL_ENABLED
 }
 
