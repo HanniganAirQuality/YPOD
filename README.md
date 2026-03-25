@@ -1,6 +1,8 @@
 # YPOD
 The YPOD is a low-cost air quality monitor that we use for outreach in Project-Based Learning in Rural Schools at CU Boulder.
 
+**Note: PM signals will be delayed by 1-2 minutes. This is because of the firmware of the YPOD which has a timeout for the communication line of the PMS5003. NO OTHER SENSORS DO THIS. YES WE DO KNOW ABOUT IT (thank you Julia) & YES WE ARE TRYING TO FIX IT**
+
 # Using this Firmware
 To utilize the most recent firmware, you need to:
 1. Move all un-zipped libraries into your your Documents/Arduino/libraries folder on your computer
