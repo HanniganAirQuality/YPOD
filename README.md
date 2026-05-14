@@ -44,7 +44,6 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V3.4.4        | RETIGO LiveVis | Percy         | September 9, 2024  | Changes how serial montior writes      |
 |               |                |               |                    | Works with MATLAB Live Vis V3+         |
 | V3.4.5        | RTC Config Set | Percy         | September 20, 2024 | Adds a RTC_ADJUST config var           |
-|				|		 		 |               |					  |                                        |
 | V3.5.0        | Embedded Cal   | Chiara        | August 4, 2025     | Adds embedded calibration equations    |
 |				|		 		 |               |                    | CO, CO2, Temperature and RH eqns       |
 | V3.5.1		| VOC Cal		 | Chiara        | September 20, 2025 | Adds co, co2, t, rh cals for some pods |
