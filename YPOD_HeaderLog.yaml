@@ -387,15 +387,696 @@ YPOD_V3_1_2:
 YPOD_V3_2_0:
   date: 2024-06-28
   changelog: Moved RTC firmware to central firmware, removes bug in SD write, removes GPS code 
+    Header removes GPS column due to trimmed firmware
   SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .TXT
   SD: 
+    YPODID: 
+      unit: ID
+      dtype: string
+    Date:
+      unit: date
+      dtype: string
+      format: "YYYY-MM-dd"
+      sensor: DS3231
+    Time:
+      unit: time
+      dtype: string
+      format: "hh:mm:ss"
+      sensor: DS3231
+    BMP180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    BMP180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+    MET_Speed:
+      unit: MPH
+      dtype: float
+      sensor: Shenzen Anemometer (SparkFun)
+      description: Digital count metric over measured time 
+    MET_Dir:
+      unit: degrees
+      dtype: float
+      sensor: Shenzen Wind Vane (SparkFun)
+      adc: Arduino UNO A0
+      adc_mode: single-ended
+    QS1_C1: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 1
+    QS1_C2: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 2
+    QS2_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 1
+    QS2_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 2
+    QS3_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 1
+    QS3_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 2
+    QS4_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 1
+    QS4_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 2
+    Fig2600_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    ADC_EmptyChannel:
+      unit: ADU
+      dtype: uint16_t
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Ignore
+    MiCS2611_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
   Serial:
+    YPODID: 
+      unit: ID
+      dtype: string
+    Date:
+      unit: date
+      dtype: string
+      format: "YYYY-MM-dd"
+      sensor: DS3231
+    Time:
+      unit: time
+      dtype: string
+      format: "hh:mm:ss"
+      sensor: DS3231
+    BMP180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    BMP180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+    MET_Speed:
+      unit: MPH
+      dtype: float
+      sensor: Shenzen Anemometer (SparkFun)
+      description: Digital count metric over measured time 
+    MET_Dir:
+      unit: degrees
+      dtype: float
+      sensor: Shenzen Wind Vane (SparkFun)
+      adc: Arduino UNO A0
+      adc_mode: single-ended
+    QS1_C1: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 1
+    QS1_C2: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 2
+    QS2_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 1
+    QS2_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 2
+    QS3_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 1
+    QS3_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 2
+    QS4_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 1
+    QS4_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 2
+    Fig2600_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    ADC_EmptyChannel:
+      unit: ADU
+      dtype: uint16_t
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Ignore
+    MiCS2611_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
 YPOD_V3_4_3:
   date: 2024-07-08
   changelog: Updated all libraries, decreased memory & RAM, robust file naming, RTC timestamp introduced, introduced .h/.cpp split
   SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .TXT
   SD: 
+    YPODID: 
+      unit: ID
+      dtype: string
+    Date:
+      unit: date
+      dtype: string
+      format: "YYYY-MM-dd"
+      sensor: DS3231
+    Time:
+      unit: time
+      dtype: string
+      format: "hh:mm:ss"
+      sensor: DS3231
+    BMP180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    BMP180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+    MET_Speed:
+      unit: MPH
+      dtype: float
+      sensor: Shenzen Anemometer (SparkFun)
+      description: Digital count metric over measured time 
+    MET_Dir:
+      unit: degrees
+      dtype: float
+      sensor: Shenzen Wind Vane (SparkFun)
+      adc: Arduino UNO A0
+      adc_mode: single-ended
+    QS1_C1: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 1
+    QS1_C2: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 2
+    QS2_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 1
+    QS2_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 2
+    QS3_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 1
+    QS3_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 2
+    QS4_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 1
+    QS4_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 2
+    Fig2600_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    ADC_EmptyChannel:
+      unit: ADU
+      dtype: uint16_t
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Ignore
+    MiCS2611_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
   Serial:
+    YPODID: 
+      unit: ID
+      dtype: string
+    Date:
+      unit: date
+      dtype: string
+      format: "YYYY-MM-dd"
+      sensor: DS3231
+    Time:
+      unit: time
+      dtype: string
+      format: "hh:mm:ss"
+      sensor: DS3231
+    BMP180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    BMP180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BMP180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+    MET_Speed:
+      unit: MPH
+      dtype: float
+      sensor: Shenzen Anemometer (SparkFun)
+      description: Digital count metric over measured time 
+    MET_Dir:
+      unit: degrees
+      dtype: float
+      sensor: Shenzen Wind Vane (SparkFun)
+      adc: Arduino UNO A0
+      adc_mode: single-ended
+    QS1_C1: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 1
+    QS1_C2: 
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 1, channel 2
+    QS2_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 1
+    QS2_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 2, channel 2
+    QS3_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 1
+    QS3_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 3, channel 2
+    QS4_C1:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 1
+    QS4_C2:
+      unit: ADU
+      dtype: int16_t
+      sensor: Alphasense B4
+      adc: MCP342x
+      adc_mode: differential 
+      description: Quadstat module, Alphasense B4 sensor 4, channel 2
+    Fig2600_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    ADC_EmptyChannel:
+      unit: ADU
+      dtype: uint16_t
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Ignore
+    MiCS2611_heater:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611, heater reading
+      adc: ADS1115
+      adc_mode: single-ended
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
 YPOD_V3_4_4:
   date: 2024-09-09
   changelog: Changes how serial monitor is writing & works with MATLAB Live Vis V3+ 
