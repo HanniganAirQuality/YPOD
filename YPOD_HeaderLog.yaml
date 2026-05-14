@@ -898,20 +898,483 @@ YPOD_V3_4_4:
   date: 2024-09-09
   changelog: Changes how serial monitor is writing & works with MATLAB Live Vis V3+ 
   SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .CSV
   SD: 
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    EAST_LONGITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    NORTH_LATITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    YPODID: 
+      unit: ID
+      dtype: string
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
   Serial:
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
 YPOD_V3_4_5:
   date: 2024-09-20
   changelog: Adds a RTC_ADJUST config variable
+    No changes from 3.4.4 to my knowledge
   SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .CSV
   SD: 
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    EAST_LONGITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    NORTH_LATITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    YPODID: 
+      unit: ID
+      dtype: string
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
   Serial:
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
 YPOD_V3_5_0:
   date: 2025-08-04
   changelog: Added embedded calibrations for CO, CO2, T & RH 
+  date: 2024-09-20
+  changelog: Adds a RTC_ADJUST config variable
+    No changes from 3.4.4 to my knowledge
   SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .CSV
   SD: 
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    EAST_LONGITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    NORTH_LATITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    YPODID: 
+      unit: ID
+      dtype: string
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
   Serial:
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ISB:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: There is only one channel for this because there were not ports available for unused channel
+    CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
 YPOD_V3_5_1:
   date: 2025-09-20
   changelog: Added cal for some pods & TVOC cal, CO in PPM as float type output!
