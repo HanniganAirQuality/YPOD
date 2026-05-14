@@ -3,6 +3,11 @@ The YPOD is a low-cost air quality monitor that we use for outreach in Project-B
 
 **Note: PM signals will be delayed by 1-2 minutes. This is because of the firmware of the YPOD which has a timeout for the communication line of the PMS5003. NO OTHER SENSORS DO THIS. YES WE DO KNOW ABOUT IT (thank you Julia) & YES WE ARE TRYING TO FIX IT**
 
+# Headers!
+For version-logged headers, please see YPOD_HeaderLog.yaml. 
+
+After introducing calibration, V3.5+, we have SD, SD_Calibrate, Serial & Serial_Calibrate. _Calibrate is the default upload for HAQLab YPODs, but during our actual cal process, we use SD & Serial config, which is useful to keep present here.
+
 # Using this Firmware
 To utilize the most recent firmware, you need to:
 1. Move all un-zipped libraries into your your Documents/Arduino/libraries folder on your computer
