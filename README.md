@@ -57,3 +57,4 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
 | V4.0.1		| PM Error Fix   | Percy         | January 20, 2026   | Replaces text error for MATLAB LV |
 | V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Fixes 1-2 min delay for PM signal |
+| V4.0.2		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
