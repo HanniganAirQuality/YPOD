@@ -37,9 +37,7 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | Version       | "Named" Ver.   | Pilot         | Date               | Description & Purpose                  |
 | ------------- | -------------- | ------------- | -------------      | -------------------------------------- |
 | V3.1.2        | Library Fix    | Percy         | March 19, 2024     | Corrects RTClib Version                |
-| V3.2.0        | Rewrite 1      | Percy         | June 28, 2024      | Moves RTC firmware to central firmware |
-|               |                |               |                    | Removes bug in SD write with pull LOW  |
-|               |                |               |                    | Removes GPS code (unusable due to HW)  |
+| V3.2.0        | Rewrite 1      | Percy         | June 28, 2024      | Moves RTC firmware to central firmware, Removes bug in SD write with pull LOW,Removes GPS code (unusable due to HW)|
 | V3.4.3        | RETIGO Rewrite | Percy         | July 08, 2024      | Updated all libraries		           |
 |               |                |               |                    | Decreased memory/RAM usage 	           |
 |               |                |               |                    | Rewrote file naming more robust	       |
