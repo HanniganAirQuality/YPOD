@@ -11,22 +11,24 @@ After introducing calibration, V3.5+, we have SD, SD_Calibrate, Serial & Serial_
 # Using this Firmware
 To utilize the most recent firmware, you need to:
 1. Move all un-zipped libraries into your your Documents/Arduino/libraries folder on your computer
-	SdFat@2.2.3
-	RTClib@2.1.4
-	Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
-	Adafruit_ADS1X15@2.5.0 (ads_module.h)
-	MCP342x@1.0.4 (quad_module.h)
+	* SdFat@2.2.3
+	* RTClib@2.1.4
+	* Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
+	* Adafruit_ADS1X15@2.5.0 (ads_module.h)
+	* MCP342x@1.0.4 (quad_module.h)
 2. Ensure that your YPOD_Vx.x.x folder includes:
-	YPOD_Vx.x.x.ino
-	YPOD_node.h
-	ads_module.cpp
-	ads_module.h
-	plantower_module.cpp OR PMS.cpp
-	plantower_module.h OR PMS.h
-	quad_module.cpp
-	quad_module.h
-	SFE_BMP180.cpp
-	SFE_BMP180.h
+	* YPOD_Vx.x.x.ino
+	* YPOD_node.h
+	* ads_module.cpp
+	* ads_module.h
+	* plantower_module.cpp OR PMS.cpp
+	* plantower_module.h OR PMS.h
+	* quad_module.cpp
+	* quad_module.h
+	* SFE_BMP180.cpp
+	* SFE_BMP180.h
+	* calibration.cpp
+	* calibration.h
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
@@ -46,4 +48,4 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
 | V4.0.1		| PM Error Fix   | Percy         | January 20, 2026   | Replaces text error for MATLAB LV |
 | V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Fixes 1-2 min delay for PM signal |
-| V4.0.2		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
+| V4.0.3		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
