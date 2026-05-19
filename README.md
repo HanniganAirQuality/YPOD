@@ -11,24 +11,24 @@ After introducing calibration, V3.5+, we have SD, SD_Calibrate, Serial & Serial_
 # Using this Firmware
 To utilize the most recent firmware, you need to:
 1. Move all un-zipped libraries into your your Documents/Arduino/libraries folder on your computer
-	SdFat@2.2.3
-	RTClib@2.1.4
-	Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
-	Adafruit_ADS1X15@2.5.0 (ads_module.h)
-	MCP342x@1.0.4 (quad_module.h)
+	* SdFat@2.2.3
+	* RTClib@2.1.4
+	* Adafruit_BusIO@1.16.1 (Adafruit_ADS1X15.h)
+	* Adafruit_ADS1X15@2.5.0 (ads_module.h)
+	* MCP342x@1.0.4 (quad_module.h)
 2. Ensure that your YPOD_Vx.x.x folder includes:
-	YPOD_Vx.x.x.ino
-	YPOD_node.h
-	ads_module.cpp
-	ads_module.h
-	plantower_module.cpp OR PMS.cpp
-	plantower_module.h OR PMS.h
-	quad_module.cpp
-	quad_module.h
-	SFE_BMP180.cpp
-	SFE_BMP180.h
-	calibration.cpp
-	calibration.h
+	* YPOD_Vx.x.x.ino
+	* YPOD_node.h
+	* ads_module.cpp
+	* ads_module.h
+	* plantower_module.cpp OR PMS.cpp
+	* plantower_module.h OR PMS.h
+	* quad_module.cpp
+	* quad_module.h
+	* SFE_BMP180.cpp
+	* SFE_BMP180.h
+	* calibration.cpp
+	* calibration.h
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
