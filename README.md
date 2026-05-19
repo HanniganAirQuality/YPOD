@@ -27,6 +27,8 @@ To utilize the most recent firmware, you need to:
 	quad_module.h
 	SFE_BMP180.cpp
 	SFE_BMP180.h
+	calibration.cpp
+	calibration.h
 
 # For Live Visualization
 MATLAB Live Data Visualization firmware linked here --> https://github.com/HanniganAirQuality/YPOD_LiveDataViz
