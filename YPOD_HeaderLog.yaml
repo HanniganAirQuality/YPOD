@@ -2653,3 +2653,306 @@ YPOD_V4_0_2:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
+YPOD_V4_0_3:
+  date: 2026-05-20
+  changelog: Adds 2nd CO channel for YPOD V5C3
+  SD_fileinfo: 
+    FileName: YPODID_YYYY_MM_dd
+    FileType: .CSV
+  SD: 
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    EAST_LONGITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    NORTH_LATITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    YPODID: 
+      unit: ID
+      dtype: string
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ch1:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: First CO channel
+    CO_ch2:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Second CO channel (auxillary)
+    ELT_CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+  SD_Calibrate: 
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    EAST_LONGITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    NORTH_LATITUDE: 
+      unit: NA 
+      dtype: string
+      description: For RETIGO formatting
+    YPODID: 
+      unit: ID
+      dtype: string
+    Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calibrated output, produced from an equation based on the YPODID 
+    Relative_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25 
+      description: Calibrated output, produced from an equation based on the YPODID 
+    TVOC: 
+      unit: ppm 
+      dtype: int
+      sensor: Figaro TGS2600, Figaro TGS2602
+      description: Calibrated output, produced from an equation based on the YPODID 
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    CO:
+      unit: ppb
+      dtype: int
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Calibrated output, produced from an equation based on the YPODID, uses first CO channel
+    CO2:
+      unit: ppm 
+      dtype: float
+      sensor: ELT S300-3V
+      description: Calibrated output, produced from an equation based on the YPODID 
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+  Serial:
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    BME180_Temperature:
+      unit: Celsius
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    BME180_Pressure:
+      unit: millibar
+      dtype: double
+      sensor: BME180
+      error_messages: 
+        -99: Failed measurement
+    SHT25_Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calculated from equation ((175.72 * (float)temperature_board) / (65536)) - 46.85
+    SHT25_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25
+      description: Calculated from equation ((125 * (float)humidity_board) / (65536)) - 6.00
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    MiCS2611_Ozone:
+      unit: ADU
+      dtype: uint16_t
+      sensor: MiCS-2611 
+      adc: ADS1115
+      adc_mode: single-ended
+    CO_ch1:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: First CO channel
+    CO_ch2:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Second CO channel (auxillary)
+    ELT_CO2:
+      unit: ppm #ALLEGEDLY
+      dtype: uint16_t
+      sensor: ELT S300-3V
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
+  Serial_Calibrate:
+    DateTime:
+      unit: timestamp
+      dtype: string
+      format: "YYYY-MM-ddThh:mm:ss"
+      sensor: DS3231
+    Temperature:
+      unit: Celsius
+      dtype: float
+      sensor: SHT25 
+      description: Calibrated output, produced from an equation based on the YPODID 
+    Relative_Humidity:
+      unit: "%RH"
+      dtype: float
+      sensor: SHT25 
+      description: Calibrated output, produced from an equation based on the YPODID 
+    TVOC: 
+      unit: ppm 
+      dtype: int
+      sensor: Figaro TGS2600, Figaro TGS2602
+      description: Calibrated output, produced from an equation based on the YPODID 
+    Fig2600_LightVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2600, classed as light VOCs
+      adc: ADS1115
+      adc_mode: single-ended
+    Fig2602_HeavyVOC:
+      unit: ADU
+      dtype: uint16_t
+      sensor: Figaro TGS2602, classed as heavy VOCs
+      adc: ADS1115
+    CO:
+      unit: ppm
+      dtype: int
+      sensor: Alphasense CO B4, through Alphasense ISB
+      adc: ADS1115
+      adc_mode: single-ended
+      description: Calibrated output, produced from an equation based on the YPODID, uses first CO channel
+    CO2:
+      unit: ppm 
+      dtype: float
+      sensor: ELT S300-3V
+      description: Calibrated output, produced from an equation based on the YPODID 
+    PM10_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM1.0 concentration
+    PM25_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM2.5 concentration
+    PM100_ENV: 
+      unit: ug/m^3 #ALLEGEDLY
+      dtype: uint16_t
+      sensor: Plantower PMS5003
+      description: Environmental PM10.0 concentration
