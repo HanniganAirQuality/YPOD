@@ -1304,7 +1304,7 @@ YPOD_V3_5_0:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
-  SD_Calibrated: 
+  SD_Calibrate: 
     DateTime:
       unit: timestamp
       dtype: string
@@ -1582,7 +1582,7 @@ YPOD_V3_5_1:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
-  SD_Calibrated: 
+  SD_Calibrate: 
     DateTime:
       unit: timestamp
       dtype: string
@@ -1872,7 +1872,7 @@ YPOD_V4_0_0:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
-  SD_Calibrated: 
+  SD_Calibrate: 
     DateTime:
       unit: timestamp
       dtype: string
@@ -2162,7 +2162,7 @@ YPOD_V4_0_1:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
-  SD_Calibrated: 
+  SD_Calibrate: 
     DateTime:
       unit: timestamp
       dtype: string
@@ -2452,7 +2452,7 @@ YPOD_V4_0_2:
       dtype: uint16_t
       sensor: Plantower PMS5003
       description: Environmental PM10.0 concentration
-  SD_Calibrated: 
+  SD_Calibrate: 
     DateTime:
       unit: timestamp
       dtype: string
