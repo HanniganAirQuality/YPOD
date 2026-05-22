@@ -1,19 +1,22 @@
 /*********************************************************************************
  * @project HAQ Lab YPOD
  *
- * @file    YPOD_V4.0.2.ino
+ * @file    YPOD_V3.5.1.ino
  * @author  Percy Smith
  * @author  Chiara Pesce
  * @brief   Central firmware to collect data through the YPOD
  * 
- * @date    March 3, 2026
- * @version V4.0.2
- * @log     Hoping to fix timing issues.... 
+ * @date    October 22, 2025
+ * @version V3.5.1
+ * @log     Works with the live data visualization tool
+ *          Changes the serial logging mech & decreases the delays\
+ *          Added RTC adjust setting to reset DT
 ***********************************************************************************/
 /*  Libraries  */
 #include <Arduino.h>          
 #include <SPI.h>              //P - last tested with "SPI@1.0"      
 #include <Wire.h>             //P - last tested with "Wire@1.0"
+#include <SoftwareSerial.h>   //P - last tested with "SoftwareSerial@1.0"
 #include <SdFat.h>            //P - last tested with "SdFat@2.2.3"
 #include <RTClib.h>           //P - last tested with "RTClib@2.1.4"
 /*  Header Files  */
@@ -41,13 +44,12 @@
   QUAD_Module quad_module;
   quad_data qs_data; 
 #endif  //QUAD_ENABLED
-
+//PMS5003 - PM 2.5 - Plantower
 #if PMS_ENABLED
-  #include <SoftwareSerial.h>   //P - last tested with "SoftwareSerial@1.0"
-  #include "PMS.h"
+  #include "plantower_module.h"
+  PMS5003 pms5003;
+  pms5003data pmdata;
   SoftwareSerial pmsSerial(2, 3);
-  PMS pms(pmsSerial);
-  PMS::DATA pms_data;
 #endif //PMS_ENABLED
 //ADS1115 Modules - Used for CO-B4 (CO), Fig2600 (VOC), Fig2602 (VOC) & MiSC 2611 (O3)
 ADS_Module ads_module;
@@ -70,15 +72,15 @@ char bufftime[] = "YYYY-MM-DDThh:mm:ss";
   int Y,M,D,h,m,s;
   
 /***************************************************************************************/
-void setup() {
-    /*  Intializing Global Variables  */
+void setup() 
+{
+  /*  Intializing Global Variables  */
   #if SERIAL_ENABLED
     Serial.begin(9600);
   #endif  //SERIAL_ENABLED
   #if PMS_ENABLED
     pmsSerial.begin(9600);
-    delay(100);
-    pms.passiveMode();
+    delay(500);
   #endif //PMS_ENABLED
   //Central Firmware (comms protocols)
   Wire.begin();
@@ -120,26 +122,29 @@ void setup() {
   file.close();                                       //close file, we opened so loop() is faster 
   digitalWrite(SD_CS, HIGH);    //release chip select on SD - allow other comm with SPI
   digitalWrite(G_LED, LOW);     //turn off green LED (file is closed)
-} //void setup()
+} //void setup() 
 
-void loop() {
+/***************************************************************************************/
+void loop() 
+{
   digitalWrite(G_LED, LOW);
   #if PMS_ENABLED
-    bool pm_returned;
-    pms.requestRead();
-    if (pms.readUntil(pms_data)) {
-      pm_returned = true;
-    } else {
-      pm_returned = false;
-    } //if (pms.readUntil(pms_data)) 
-    pmsSerial.flush();
+  //poll for plantower data first cause it has to run a while loop and i'm paranoid !!
+  bool pm_available = 0;
+  while(!pm_available)
+  {
+    pm_available = pms5003.readPMSdata(&pmsSerial);
     delay(100);
-  #endif 
- 
+    if(pm_available) { pmdata = pms5003.returnPMdataset(); }
+  } //while(!pm_available)
+  delay(100);
+  #endif //PMS_ENABLED
+
   #if QUAD_ENABLED
     qs_data = quad_module.return_data();
   #endif
 
+  delay(100);
   #if SHT25
     const byte temp_command = B11100011;
     const byte hum_command = B11100101;
@@ -147,8 +152,8 @@ void loop() {
     humidity_board = read_wire(hum_command);
     float humidity_SHT25 = ((125 * (float)humidity_board) / (65536)) - 6.00;
     float temperature_SHT25 = ((175.72 * (float)temperature_board) / (65536)) - 46.85;
-    delay(100);
   #endif  //SHT25
+  delay(100);
 
   #if BME180
   //Get BMP data
@@ -172,8 +177,8 @@ void loop() {
     T = -99;
     P = -99;
   } //if (status != 0) outer loop?
-  delay(100);
   #endif  //BME180
+  delay(100);
 
   float CO2 = getS300CO2();
   delay(100);
@@ -190,14 +195,14 @@ void loop() {
     sd.begin(SD_CS);
   }
 
+  delay(100);
   DateTime now = RTC.now();
   Y = now.year();  M = now.month();  D = now.day();  h = now.hour();  m = now.minute();  s = now.second();
-  delay(100);
   sprintf(bufftime, "%04u-%02u-%02uT%02u:%02u:%02u", Y, M, D, h, m, s);
 
   if (sd.begin(SD_CS)) {
     // FILE FORMAT = RETIGO
-    // delay(100);
+    delay(100);
     file.open(fileName, O_CREAT | O_APPEND | O_WRITE); 
     delay(100);
     if(file.isOpen())
@@ -220,8 +225,8 @@ void loop() {
         file.print(",");
         file.print(P);
         file.print(",");
-        delay(100);
       #endif  //BME180
+      delay(100);
 
       #if SHT25
         // Temeprature
@@ -250,15 +255,19 @@ void loop() {
         file.print(tvoc);
       #endif 
       file.print(",");
+      delay(100);
       file.print(ads_data.Fig1); //Right slot - 2600
       file.print(",");
+      delay(100);
       file.print(ads_data.Fig2); //Left slot - 2602
       file.print(",");
+      delay(100);
 
       // Ozone
       #if MISC2611 // Conditional for ozone sensor
         file.print(ads_data.e2V);
         file.print(",");
+        delay(100);
       #endif
 
       // CO
@@ -268,8 +277,8 @@ void loop() {
       #else
         file.print(ads_data.CO); // Default - no calibration
       #endif
-      delay(100);
       file.print(",");
+      delay(100);
 
       // CO2
       #if CALIBRATE // Calls calibration eqn for CO2
@@ -282,49 +291,40 @@ void loop() {
       file.print(",");
 
       #if PMS_ENABLED
-        if(pm_returned) {
-          file.print(pms_data.pm10_env);
-          file.print(F(","));
-          file.print(pms_data.pm25_env);
-          file.print(F(","));
-          file.print(pms_data.pm100_env);
-          file.print(F(","));
-          #if INCLUDE_STANDARD
-            file.print(pms_data.pm10_standard);
-            file.print(F(","));
-            file.print(pms_data.pm25_standard);
-            file.print(F(","));
-            file.print(pms_data.pm100_standard);
-            file.print(F(","));
-          #else
-            file.print(F(",,,"));
-          #endif //INCLUDE_STANDARD
-          // delay(100);
-          #if INCLUDE_PARTICLES
-            if(pms_data.hasParticles) {
-              file.print(pms_data.particles_03um);
-              file.print(F(","));
-              file.print(pms_data.particles_05um);
-              file.print(F(","));
-              file.print(pms_data.particles_10um);
-              file.print(F(","));
-              file.print(pms_data.particles_25um);
-              file.print(F(","));
-              file.print(pms_data.particles_50um);
-              file.print(F(","));
-              file.print(pms_data.particles_100um);
-              file.print(F(","));
-            } // if(pms_data.hasParticles)
-          #else 
-            file.print(F(",,,,,,"));
-          #endif  //INCLUDE_PARTICLES
-          // delay(100);
-        } else {
-          file.print(F(",,,,,,,,,,,,"));
-        } //if(pm_returned)
-        #else 
-          file.print(F(",,,,,,,,,,,,"));
-        #endif //PMS_ENABLED
+      file.print(pmdata.pm10_env);
+      file.print(",");
+      delay(100);
+      file.print(pmdata.pm25_env);
+      file.print(",");
+      delay(100);
+      file.print(pmdata.pm100_env);
+      file.print(",");
+      delay(100);
+        #if INCLUDE_STANDARD
+          file.print(pmdata.pm10_standard);
+          file.print(",");
+          file.print(pmdata.pm25_standard);
+          file.print(",");
+          file.print(pmdata.pm100_standard);
+          file.print(",");
+        #endif //INCLUDE_STANDARD
+        delay(100);
+        #if INCLUDE_PARTICLES
+          file.print(pmdata.particles_03um);
+          file.print(",");
+          file.print(pmdata.particles_05um);
+          file.print(",");
+          file.print(pmdata.particles_10um);
+          file.print(",");
+          file.print(pmdata.particles_25um);
+          file.print(",");
+          file.print(pmdata.particles_50um);
+          file.print(",");
+          file.print(pmdata.particles_100um);
+          file.print(",");
+        #endif  //INCLUDE_PARTICLES
+        delay(100);
+      #endif //PMS_ENABLED
       #if QUAD_ENABLED
         file.print(qs_data.a1C1);
         file.print(",");
@@ -347,7 +347,7 @@ void loop() {
       delay(100);
       file.sync();
       file.close();
-      // delay(100);
+      delay(100);
     }    else    {
       Serial.println("file not opening?");
       file.close();
@@ -360,7 +360,7 @@ void loop() {
   //NOW ECHO TO SERIAL
   now = RTC.now();
   #if SERIAL_ENABLED
-  // Serial.print("\n");
+    // Serial.print("\n");
     Serial.print(bufftime);
     Serial.print(",");
     delay(100);
@@ -376,7 +376,7 @@ void loop() {
       Serial.print(",");
       delay(100);
     #endif  //BME180
-    
+
     #if SHT25
       // Temperature
       #if CALIBRATE // Calls calibration eqn for temperature
@@ -403,15 +403,19 @@ void loop() {
       Serial.print(tvoc);
     #endif
     Serial.print(",");
+    delay(100);
     Serial.print(ads_data.Fig1);
     Serial.print(",");
+    delay(100);
     Serial.print(ads_data.Fig2);
     Serial.print(",");
+    delay(100);
 
     // Ozone
     #if MISC2611
       Serial.print(ads_data.e2V);
       Serial.print(",");
+      delay(100);
     #endif
 
     // CO
@@ -421,8 +425,8 @@ void loop() {
     #else
       Serial.print(ads_data.CO); // Default - no calibration
     #endif
-    delay(100);
     Serial.print(",");
+    delay(100);
 
     // CO2
     #if CALIBRATE // Calls calibration eqn for CO2
@@ -431,45 +435,41 @@ void loop() {
     #else
       Serial.print(CO2); // Default - no calibration
     #endif
-    delay(100);
     Serial.print(",");
-  #if PMS_ENABLED
-    if(pm_returned){
-      Serial.print(pms_data.pm10_env);
-      Serial.print(F(","));
-      Serial.print(pms_data.pm25_env);
-      Serial.print(F(","));
-      Serial.print(pms_data.pm100_env);
-      Serial.print(F(","));
+    delay(100);
+
+    #if PMS_ENABLED
+      Serial.print(pmdata.pm10_env);
+      Serial.print(",");
+      Serial.print(pmdata.pm25_env);
+      Serial.print(",");
+      Serial.print(pmdata.pm100_env);
+      Serial.print(",");
+      delay(100);
       #if INCLUDE_STANDARD
-        Serial.print(pms_data.pm10_standard);
-        Serial.print(F(","));
-        Serial.print(pms_data.pm25_standard);
-        Serial.print(F(","));
-        Serial.print(pms_data.pm100_standard);
-        Serial.print(F(","));
+        Serial.print(pmdata.pm10_standard);
+        Serial.print(",");
+        Serial.print(pmdata.pm25_standard);
+        Serial.print(",");
+        Serial.print(pmdata.pm100_standard);
+        Serial.print(",");
       #endif //INCLUDE_STANDARD
+      delay(100);
       #if INCLUDE_PARTICLES
-        if(pms_data.hasParticles) {
-          Serial.print(pms_data.particles_03um);
-          Serial.print(F(","));
-          Serial.print(pms_data.particles_05um);
-          Serial.print(F(","));
-          Serial.print(pms_data.particles_10um);
-          Serial.print(F(","));
-          Serial.print(pms_data.particles_25um);
-          Serial.print(F(","));
-          Serial.print(pms_data.particles_50um);
-          Serial.print(F(","));
-          Serial.print(pms_data.particles_100um);
-          Serial.print(F(","));
-        } //if(pms_data.hasParticles)
-      #endif  //INCLUDE_PARTICLES
-      
-    } else {
-      // Serial.print(F("Error reaching PMS5003")); //THIS FREAKS OUT THE SERIAL MONITOR 
-      Serial.print(F(",,,")); //FIXES ISSUE WITH SERIAL
-    } //if(pm_returned)
+        Serial.print(pmdata.particles_03um);
+        Serial.print(",");
+        Serial.print(pmdata.particles_05um);
+        Serial.print(",");
+        Serial.print(pmdata.particles_10um);
+        Serial.print(",");
+        Serial.print(pmdata.particles_25um);
+        Serial.print(",");
+        Serial.print(pmdata.particles_50um);
+        Serial.print(",");
+        Serial.print(pmdata.particles_100um);
+        Serial.print(",");
+      #endif //INCLUDE_PARTICLES
+      delay(200);
     #endif //PMS_ENABLED
     #if QUAD_ENABLED
       Serial.print(qs_data.a1C1);
@@ -491,10 +491,8 @@ void loop() {
     #endif //QS_ENABLED
     Serial.write(13);
     Serial.write(10);
-    Serial.flush();
   #endif  //SERIAL_ENABLED
 }
-
 
 float getS300CO2() {
   int i = 1;
@@ -541,4 +539,3 @@ unsigned int read_wire(byte cmd) {
   //HUM_byte1 shifted left by 1 byte, (|) bitwise inclusize OR operator
   return ((byte1 << 8) | (byte2)&mask);
 }
-

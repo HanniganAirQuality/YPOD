@@ -27,7 +27,7 @@
 
 #define BME180      0
 #define SHT25       1
-// #define BME680      0 //NOT WRITTEN
+#define BME680      0 //NOT WRITTEN
 #define MISC2611    1 // Ozone sensor
 
 const int PM_RX = 2;
@@ -37,9 +37,11 @@ const int PM_TX = 3;
 // SD Card Settings
 const int SD_CS = 4;
 
-const char ypodID[] = "YPODP1";
+const char ypodID[] = "YPODV2";
+
+#if CALIBRATE
   const char calID_letter = ypodID[4]; // Letter for calID
   const char calID_number = ypodID[5]; // Number for calID
+#endif
 
-
-#endif// _YPOD_NODE_H
+#endif // _YPOD_NODE_H
