@@ -4,6 +4,7 @@
  * @file    YPOD_V4.0.3.ino
  * @author  Percy Smith, percy.smith@colorado.edu
             Chiara Pesce, chiara.pesce@colorado.edu
+            Spencer Hoehl, Spencer.Hoehl@colorado.edu
  * @brief   Central firmware to collect data through the YPOD
  * 
  * @date    June 2 2026
