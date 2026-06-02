@@ -6,9 +6,9 @@
             Chiara Pesce, chiara.pesce@colorado.edu
  * @brief   Central firmware to collect data through the YPOD
  * 
- * @date    May 13, 2026
- * @version V4.0.2
- * @log     Adds 2nd CO channel for new YPOD V5C2 hardware
+ * @date    June 2 2026
+ * @version V4.0.3
+ * @log     Fix TVOC comma formatting
 ***********************************************************************************/
 /*  Libraries  */
 #include <Arduino.h>          
@@ -248,8 +248,8 @@ void loop() {
       #if CALIBRATE // calls calibration eqn for voc
         int tvoc = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).TVOC_; // Temp varibale to store object
         file.print(tvoc);
+        file.print(",");
       #endif 
-      file.print(",");
       file.print(ads_data.Fig1); //Right slot - 2600
       file.print(",");
       file.print(ads_data.Fig2); //Left slot - 2602
@@ -403,8 +403,8 @@ void loop() {
     #if CALIBRATE // Calls calibration eqn for tvoc
       int tvoc = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).TVOC_; // Temp varibale to store object
       Serial.print(tvoc);
+      Serial.print(",");
     #endif
-    Serial.print(",");
     Serial.print(ads_data.Fig1);
     Serial.print(",");
     Serial.print(ads_data.Fig2);
