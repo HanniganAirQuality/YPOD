@@ -27,6 +27,12 @@
   #include "calibration.h"
   Cal cal;
 #endif
+//BME 680 - Temperature, Pressure, Relative Humidity, VOC - Bosch (Replacement part)
+#if BME680
+  #include <Adafruit_BME680.h> //check with percy about how to ensure this is in the file when code is pulled from github
+  Adafruit_BME680 bme_sensor;
+#endif  //BME680
+
 //BME 180 - Temperature & Pressure - Bosch (DISCONTINUED)
 #if BME180
   #include "SFE_BMP180.h"
@@ -93,6 +99,21 @@ void setup() {
   #if BME180
     BMP.begin();          //Initialize BME 180 (creates objects in .cpp)
   #endif  //BME180
+  #if BME680          //Initializes BME 680 
+    bme_sensor.begin(0x76);
+    if (!bme_sensor.begin(0x76)) {
+      Serial.println(F("Could not find a valid BME680 sensor, check wiring!"));
+      while (1);
+    } //if(!bme_sensor.begin(BME680_CS))
+    //Set up oversampling an initialize filter
+    bme_sensor.setTemperatureOversampling(BME680_OS_8X);
+    bme_sensor.setHumidityOversampling(BME680_OS_2X);
+    bme_sensor.setPressureOversampling(BME680_OS_4X);
+    bme_sensor.setIIRFilterSize(BME680_FILTER_SIZE_3);
+    bme_sensor.setGasHeater(320, 150);
+  #endif  //BME680
+
+
   //Initialize Pins - Establish direction of pin comms
   pinMode(SD_CS, OUTPUT);
   pinMode(G_LED, OUTPUT);  
@@ -140,6 +161,14 @@ void loop() {
   #if QUAD_ENABLED
     qs_data = quad_module.return_data();
   #endif
+
+  #if BME680
+    if (! bme_sensor.performReading()) {
+    Serial.println(F("Failed to perform reading :("));
+    return;
+    }
+  #endif
+
 
   #if SHT25
     const byte temp_command = B11100011;
@@ -215,6 +244,21 @@ void loop() {
       file.print(ypodID);
       file.print(",");
       delay(100);
+      
+      
+      #if BME680
+        file.print(bme_sensor.readTemperature());
+        file.print(F(","));
+        file.print(bme_sensor.readPressure());
+        file.print(F(","));
+        file.print(bme_sensor.readHumidity());
+        file.print(F(","));
+        // file.print(bme_sensor.readGas());
+        // file.print(F(","));
+      #endif
+
+
+
 
       #if BME180
         file.print(T);
@@ -368,10 +412,26 @@ void loop() {
     Serial.print(",");
     delay(100);
     // YPOD ID
-    // Serial.print(ypodID);
-    // Serial.print(",");
-    // delay(100);
+    Serial.print(ypodID);
+    Serial.print(",");
+    delay(100);
     //T, H, T, P
+
+    //BME680
+    #if BME680
+      Serial.print((bme_sensor.temperature));
+      Serial.print(F(","));
+      Serial.print(bme_sensor.pressure);
+      Serial.print(F(","));
+      Serial.print(bme_sensor.humidity);
+      Serial.print(F(","));
+      // Serial.print(bme_sensor.readGas());
+      // Serial.print(F(","));
+    #endif
+
+
+
+
     #if BME180
       Serial.print(T);
       Serial.print(",");

@@ -26,18 +26,18 @@
 #define INCLUDE_PARTICLES     0
 
 #define BME180      0
-#define SHT25       1
-// #define BME680      0 //NOT WRITTEN
-#define MISC2611    1 // Ozone sensor
+#define SHT25       0
+#define BME680      1 
+#define MISC2611    0 // Ozone sensor
 
 const int PM_RX = 2;
 const int PM_TX = 3;
 #define G_LED     10
 
 // SD Card Settings
-const int SD_CS = 4;
+const int SD_CS = 8;  //Must be 8 if using updated ypod shield
 
-const char ypodID[] = "YPODP1";
+const char ypodID[] = "YPODS01";  //Follow proper convention
   const char calID_letter = ypodID[4]; // Letter for calID
   const char calID_number = ypodID[5]; // Number for calID
 
