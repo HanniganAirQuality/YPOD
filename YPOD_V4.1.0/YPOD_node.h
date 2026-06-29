@@ -4,7 +4,8 @@
  *
  * @author  Percy Smith, percy.smith@colorado.edu
  * @author  Chiara Pesce, chiara.pesce@colorado.edu
- * @date    July 31, 2025
+ * @author  Alex Hansen, alexander.hansen@colorado.edu
+ * @date    June 29, 2026
  * 
  * FOR AQIQ RE-UPLOAD PMS_ENABLED = 1, BME180 = 0, SHT25 = 1 & MISC2611 = 1
 ******************************************************************************/
@@ -21,7 +22,7 @@
 
 #define RTC_UPDATE            0 // IF you have to update RTC, please upload after with a 0
 
-#define INCLUDE_HEATERS       0
+#define HEATERS_ENABLED       0
 #define INCLUDE_STANDARD      0
 #define INCLUDE_PARTICLES     0
 
