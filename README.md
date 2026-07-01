@@ -47,7 +47,7 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V3.5.1		| VOC Cal		 | Chiara        | September 20, 2025 | Adds co, co2, t, rh cals for some pods, VOC cal for TVOC, patches|
 | V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
 | V4.0.1		| PM Error Fix   | Percy         | January 20, 2026   | Replaces text error for MATLAB LV |
-| V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Fixes 1-2 min delay for PM signal |
+| V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Improves 1-2 min delay for PM signal |
 | V4.0.3		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
 | V4.0.4		| Headers        | Chiara        | May 18, 2026       | Standardizes all headers irregardless of calibration or sensors |
 | V4.0.5		| Headers        | Chiara        | June 29, 2026      | Adds column for calibrated CO |
