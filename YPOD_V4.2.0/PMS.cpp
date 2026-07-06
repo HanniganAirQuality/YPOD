@@ -5,7 +5,7 @@
  * @cite    kintel - https://github.com/kintel/PMS/tree/particles
  * 
  * @editor  Alex Hansen, alexander.hansen@colorado.edu
- * @date    June 29, 2026
+ * @date    July 1, 2026
  ******************************************************************************/
 #include "Arduino.h"
 #include "PMS.h"

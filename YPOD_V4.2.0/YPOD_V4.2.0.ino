@@ -4,11 +4,12 @@
  * @file    YPOD_V4.2.0.ino
  * @author  Percy Smith, percy.smith@colorado.edu
             Chiara Pesce, chiara.pesce@colorado.edu
+            Alex Hansen, alex.hansen@colorado.edu
  * @brief   Central firmware to collect data through the YPOD
  * 
- * @date    June 29, 2026
+ * @date    July 1, 2026
  * @version V4.2.0
- * @log     Uses the same row formatter for SD and Serial outputs
+ * @log     Adds firmware version and aligns SD/Serial columns
 ***********************************************************************************/
 /*  Libraries  */
 #include <Arduino.h>
@@ -16,6 +17,7 @@
 #include <Wire.h>    //P - last tested with "Wire@1.0"
 #include <SdFat.h>   //P - last tested with "SdFat@2.2.3"
 #include <RTClib.h>  //P - last tested with "RTClib@2.1.4"
+#include <string.h>
 /*  Header Files  */
 #include "YPOD_node.h"
 #include "ads_module.h"  //P - last tested with "Adafruit ADS1X15@2.5.0" & "Adafruit BusIO@1.16.1"
@@ -67,12 +69,10 @@ File file;
 // char ypodID[] = "YPODID";
 char fileName[] = "YPODID_YYYY_MM_DD.CSV";
 char bufftime[] = "YYYY-MM-DDThh:mm:ss";
+char firmwareFileName[32];
 int Y, M, D, h, m, s;
-const char firmwareVersion[] = "4.2.0";
 
-void printDataRow(Print &out, bool pm_returned, double bme_temperature, double bme_pressure, float sht_temperature, float sht_humidity, float co2);
-void printPMS(Print &out, bool pm_returned);
-void printQuad(Print &out);
+void printOutput(Print &output, bool pm_returned, double T, double P, float temperature_SHT25, float humidity_SHT25, float CO2);
 
 /***************************************************************************************/
 void setup() {
@@ -87,6 +87,24 @@ void setup() {
   delay(100);
   pms.clearInput();
 #endif  //PMS_ENABLED
+  const char *sketchName = __FILE__;
+  const char *slash = strrchr(__FILE__, '/');
+  const char *backslash = strrchr(__FILE__, '\\');
+  if (slash && slash > sketchName) {
+    sketchName = slash + 1;
+  }
+  if (backslash && backslash > sketchName) {
+    sketchName = backslash + 1;
+  }
+
+  strncpy(firmwareFileName, sketchName, sizeof(firmwareFileName) - 1);
+  firmwareFileName[sizeof(firmwareFileName) - 1] = '\0';
+
+  char *inoExtension = strstr(firmwareFileName, ".ino");
+  if (inoExtension) {
+    *inoExtension = '\0';
+  }
+
   //Central Firmware (comms protocols)
   Wire.begin();
   SPI.begin();
@@ -131,10 +149,10 @@ void setup() {
 void loop() {
   digitalWrite(G_LED, LOW);
   bool pm_returned = false;
-  double bme_temperature = -99;
-  double bme_pressure = -99;
-  float sht_temperature = 0;
-  float sht_humidity = 0;
+  double T = -99;
+  double P = -99;
+  float temperature_SHT25 = 0;
+  float humidity_SHT25 = 0;
 
 #if PMS_ENABLED
   pms.clearInput();
@@ -156,8 +174,8 @@ void loop() {
   const byte hum_command = B11100101;
   temperature_board = read_wire(temp_command);
   humidity_board = read_wire(hum_command);
-  sht_humidity = ((125 * (float)humidity_board) / (65536)) - 6.00;
-  sht_temperature = ((175.72 * (float)temperature_board) / (65536)) - 46.85;
+  humidity_SHT25 = ((125 * (float)humidity_board) / (65536)) - 6.00;
+  temperature_SHT25 = ((175.72 * (float)temperature_board) / (65536)) - 46.85;
   delay(100);
 #endif  //SHT25
 
@@ -168,19 +186,19 @@ void loop() {
   if (status != 0) {
     //Serial.println(status);
     delay(status);
-    status = BMP.getTemperature(bme_temperature);
+    status = BMP.getTemperature(T);
     status = BMP.startPressure(3);
     if (status != 0) {
       delay(status);
-      status = BMP.getPressure(bme_pressure, bme_temperature);
+      status = BMP.getPressure(P, T);
     } else {
       //if good temp; but can't compute P
-      bme_pressure = -99;
+      P = -99;
     }  //if (status != 0)
   } else {
     //if bad temp; then can't compute temp or pressure
-    bme_temperature = -99;
-    bme_pressure = -99;
+    T = -99;
+    P = -99;
   }  //if (status != 0) outer loop?
   delay(100);
 #endif  //BME180
@@ -217,7 +235,7 @@ void loop() {
     delay(100);
     if (file.isOpen()) {
       digitalWrite(G_LED, HIGH);
-      printDataRow(file, pm_returned, bme_temperature, bme_pressure, sht_temperature, sht_humidity, CO2);
+      printOutput(file, pm_returned, T, P, temperature_SHT25, humidity_SHT25, CO2);
       delay(100);
       file.sync();
       file.close();
@@ -234,150 +252,138 @@ void loop() {
   //NOW ECHO TO SERIAL
   now = RTC.now();
 #if SERIAL_ENABLED
-  printDataRow(Serial, pm_returned, bme_temperature, bme_pressure, sht_temperature, sht_humidity, CO2);
+  printOutput(Serial, pm_returned, T, P, temperature_SHT25, humidity_SHT25, CO2);
   Serial.flush();
 #endif  //SERIAL_ENABLED
 }
 
-void printDataRow(Print &out, bool pm_returned, double bme_temperature, double bme_pressure, float sht_temperature, float sht_humidity, float co2) {
-  out.print(bufftime);
-  out.print(F(",,,"));
-  out.print(ypodID);
-  out.print(F(","));
-  out.print(firmwareVersion);
-  out.print(F(","));
+void printOutput(Print &output, bool pm_returned, double T, double P, float temperature_SHT25, float humidity_SHT25, float CO2) {
+  // RTC, GPS blanks, YPOD ID, and firmware version
+  output.print(bufftime);
+  delay(100);
+  output.print(",");
+  
+  output.print(",");  //GPS EAST_LONGITUDE
+  output.print(",");  //GPS NORTH_LATITUDE
+
+  output.print(ypodID);
+  output.print(",");
+  output.print(firmwareFileName);
+  output.print(",");
+  delay(100);
 
 #if BME180
-  out.print(bme_temperature);
-  out.print(F(","));
-  out.print(bme_pressure);
-  out.print(F(","));
+  output.print(T);
+  output.print(",");
+  output.print(P);
+  output.print(",");
+  delay(100);
 #else
-  out.print(F(",,"));
+  output.print(",");
+  output.print(",");
+  delay(100);
 #endif  //BME180
 
-#if CALIBRATE
-  calOutput calibrated = cal.calibrate(ads_data.CO_ch1, co2, sht_humidity, sht_temperature, ads_data.Fig1, ads_data.Fig2);
-#endif  //CALIBRATE
-
 #if SHT25
-#if CALIBRATE
-  out.print(calibrated.T_);
-  out.print(F(","));
-  out.print(calibrated.RH_);
+// Temperature
+#if CALIBRATE                                                                                                                 // Calls calibration eqn for temperature
+  float tempt = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).T_;  // Temp variable to store object
+  output.print(tempt);
 #else
-  out.print(sht_temperature);
-  out.print(F(","));
-  out.print(sht_humidity);
-#endif  //CALIBRATE
-  out.print(F(","));
+  output.print(temperature_SHT25);  // Default - no calibration
+#endif
+  delay(100);
+  output.print(",");
+// Relative humidity
+#if CALIBRATE                                                                                                                   // Calls calibration eqn for relative humidity
+  float temprh = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).RH_;  // Temp varibale to store object
+  output.print(temprh);
 #else
-  out.print(F(",,"));
+  output.print(humidity_SHT25);     // Default - no calibration
+#endif
+  delay(100);
+  output.print(",");
+#else
+  output.print(",");
+  output.print(",");
+  delay(100);
 #endif  //SHT25
 
-#if CALIBRATE
-  out.print(calibrated.TVOC_);
+// Figs
+#if CALIBRATE                                                                                                                 // calls calibration eqn for voc
+  int tvoc = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).TVOC_;  // Temp varibale to store object
+  output.print(tvoc);
 #endif
-  out.print(F(","));
-  out.print(ads_data.Fig1);
-  out.print(F(","));
-  out.print(ads_data.Fig2);
-  out.print(F(","));
+  output.print(",");
+  output.print(ads_data.Fig1);  //Right slot - 2600
+  output.print(",");
+  output.print(ads_data.Fig2);  //Left slot - 2602
+  output.print(",");
+  delay(100);
 
-#if MISC2611
-  out.print(ads_data.e2V);
+// Ozone
+#if MISC2611  // Conditional for ozone sensor
+  output.print(ads_data.e2V);
 #endif
-  out.print(F(","));
+  output.print(",");
+  delay(100);
 
-#if CALIBRATE
-  out.print(calibrated.CO_);
+// CO
+#if CALIBRATE                                                                                                                   // Calls calibraiton eqn for CO
+  float tempco = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_;  // Temp variable to store object
+  output.print(tempco);
 #endif
-  out.print(F(","));
-  out.print(ads_data.CO_ch1);
-  out.print(F(","));
-  out.print(ads_data.CO_ch2);
-  out.print(F(","));
+  output.print(",");
+  output.print(ads_data.CO_ch1);
+  output.print(",");  // Default - no calibration
+  output.print(ads_data.CO_ch2);
+  delay(100);
+  output.print(",");
 
-#if CALIBRATE
-  out.print(calibrated.CO2_);
+// CO2
+#if CALIBRATE                                                                                                                   // Calls calibration eqn for CO2
+  int tempco2 = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO2_;  // Temp variable to store object
+  output.print(tempco2);
 #else
-  out.print(co2);
+  output.print(CO2);  // Default - no calibration
 #endif
-  out.print(F(","));
+  delay(100);
+  output.print(",");
 
-  printPMS(out, pm_returned);
-  printQuad(out);
-  out.println();
-}
-
-void printPMS(Print &out, bool pm_returned) {
 #if PMS_ENABLED
   if (pm_returned) {
-    out.print(pms_data.pm10_env);
-    out.print(F(","));
-    out.print(pms_data.pm25_env);
-    out.print(F(","));
-    out.print(pms_data.pm100_env);
-    out.print(F(","));
-#if INCLUDE_STANDARD
-    out.print(pms_data.pm10_standard);
-    out.print(F(","));
-    out.print(pms_data.pm25_standard);
-    out.print(F(","));
-    out.print(pms_data.pm100_standard);
-    out.print(F(","));
-#else
-    out.print(F(",,,"));
-#endif  //INCLUDE_STANDARD
-#if INCLUDE_PARTICLES
-    if (pms_data.hasParticles) {
-      out.print(pms_data.particles_03um);
-      out.print(F(","));
-      out.print(pms_data.particles_05um);
-      out.print(F(","));
-      out.print(pms_data.particles_10um);
-      out.print(F(","));
-      out.print(pms_data.particles_25um);
-      out.print(F(","));
-      out.print(pms_data.particles_50um);
-      out.print(F(","));
-      out.print(pms_data.particles_100um);
-      out.print(F(","));
-    } else {
-      out.print(F(",,,,,,"));
-    }
-#else
-    out.print(F(",,,,,,"));
-#endif  //INCLUDE_PARTICLES
+    output.print(pms_data.pm10_env);
+    output.print(F(","));
+    output.print(pms_data.pm25_env);
+    output.print(F(","));
+    output.print(pms_data.pm100_env);
+    output.print(F(","));
   } else {
-    out.print(F(",,,,,,,,,,,,"));
-  }
+    output.print(F(",,,"));
+  }  //if(pm_returned)
 #else
-  out.print(F(",,,,,,,,,,,,"));
+  output.print(F(",,,"));
 #endif  //PMS_ENABLED
-}
-
-void printQuad(Print &out) {
 #if QUAD_ENABLED
-  out.print(qs_data.a1C1);
-  out.print(F(","));
-  out.print(qs_data.a1C2);
-  out.print(F(","));
-  out.print(qs_data.a2C1);
-  out.print(F(","));
-  out.print(qs_data.a2C2);
-  out.print(F(","));
-  out.print(qs_data.a3C1);
-  out.print(F(","));
-  out.print(qs_data.a3C2);
-  out.print(F(","));
-  out.print(qs_data.a4C1);
-  out.print(F(","));
-  out.print(qs_data.a4C2);
-  out.print(F(","));
-#endif  //QUAD_ENABLED
+  output.print(qs_data.a1C1);
+  output.print(",");
+  output.print(qs_data.a1C2);
+  output.print(",");
+  output.print(qs_data.a2C1);
+  output.print(",");
+  output.print(qs_data.a2C2);
+  output.print(",");
+  output.print(qs_data.a3C1);
+  output.print(",");
+  output.print(qs_data.a3C2);
+  output.print(",");
+  output.print(qs_data.a4C1);
+  output.print(",");
+  output.print(qs_data.a4C2);
+  output.print(",");
+#endif
+  output.print("\n");
 }
-
 
 float getS300CO2() {
   int i = 1;
