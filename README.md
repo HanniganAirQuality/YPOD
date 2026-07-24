@@ -51,8 +51,9 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V4.0.3		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
 | V4.0.4		| Headers        | Chiara        | May 18, 2026       | Standardizes all headers irregardless of calibration or sensors |
 | V4.0.5		| Headers        | Chiara        | June 29, 2026      | Adds column for calibrated CO |
-| V4.1.0		| Fast PM        | Alex        | June 29, 2026      | Fixes PM delay (now only a few seconds) |
-| V4.2.0		| Synchronized Headers        | Chiara        | June 29, 2026      | Updates the way serial and SD are written to be the same and adds the firmware and pod name version to both |
+| V4.1.0		| Fast PM        | Alex          | June 29, 2026      | Fixes PM delay (now only a few seconds) |
+| V4.2.0		| Sync Headers   | Alex          | June 29, 2026      | Updates the way serial and SD are written to be the same and adds the firmware and pod name version to both |
+| V4.2.1		| SD_ENABLED     | Percy         | July 24, 2026      | Adds SD_ENABLED for troubleshooting|
 
 # Feature Request 
 * Long-term plans of adding config file
