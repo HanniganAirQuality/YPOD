@@ -1,7 +1,7 @@
 # YPOD
 The YPOD is a low-cost air quality monitor that we use for outreach in Project-Based Learning in Rural Schools at CU Boulder.
 
-**Note: PM signals will be delayed by 1-2 minutes. This is because of the firmware of the YPOD which has a timeout for the communication line of the PMS5003. NO OTHER SENSORS DO THIS. YES WE DO KNOW ABOUT IT (thank you Julia) & YES WE ARE TRYING TO FIX IT**
+**Note: PM reads now clear unread PMS5003 serial input before each passive-mode request so old buffered frames are not reported as fresh measurements.**
 
 # Headers!
 For version-logged headers, please see YPOD_HeaderLog.yaml. 
@@ -47,14 +47,8 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V3.5.1		| VOC Cal		 | Chiara        | September 20, 2025 | Adds co, co2, t, rh cals for some pods, VOC cal for TVOC, patches|
 | V4.0.0		| PMS5003 Script | Percy         | January 20, 2026   | Updates PM --> XPOD PM to fix timeout & repeats |
 | V4.0.1		| PM Error Fix   | Percy         | January 20, 2026   | Replaces text error for MATLAB LV |
-| V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Improves 1-2 min delay for PM signal |
+| V4.0.2		| Slow PM Fix    | Percy         | March 3, 2026      | Fixes 1-2 min delay for PM signal |
 | V4.0.3		| 2nd CO Channel | Chiara        | May 13, 2026       | Adds 2nd CO channel for new YPOD V5C2 hardware |
 | V4.0.4		| Headers        | Chiara        | May 18, 2026       | Standardizes all headers irregardless of calibration or sensors |
 | V4.0.5		| Headers        | Chiara        | June 29, 2026      | Adds column for calibrated CO |
-| V4.1.0		| Fast PM        | Alex          | June 29, 2026      | Fixes PM delay (now only a few seconds) |
-| V4.2.0		| Sync Headers   | Alex          | June 29, 2026      | Updates the way serial and SD are written to be the same and adds the firmware and pod name version to both |
-| V4.2.1		| SD_ENABLED     | Percy         | July 24, 2026      | Adds SD_ENABLED for troubleshooting|
-| V4.2.2		| Sum26 Cal      | Percy         | August 5, 2026     | Incorporates calibrations for E8 & D2 for the CU Museum team from the summer calibration |
-
-# Feature Request 
-* Long-term plans of adding config file
+| V4.1.0		| PM Buffer Fix  | Alex          | June 29, 2026      | Clears PMS5003 serial input before each passive-mode PM request |
