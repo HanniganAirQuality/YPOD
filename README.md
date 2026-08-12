@@ -1,7 +1,6 @@
 # YPOD
 The YPOD is a low-cost air quality monitor that we use for outreach in Project-Based Learning in Rural Schools at CU Boulder.
 
-**Note: PM signals will be delayed by 1-2 minutes. This is because of the firmware of the YPOD which has a timeout for the communication line of the PMS5003. NO OTHER SENSORS DO THIS. YES WE DO KNOW ABOUT IT (thank you Julia) & YES WE ARE TRYING TO FIX IT**
 
 # Headers!
 For version-logged headers, please see YPOD_HeaderLog.yaml. 
@@ -54,7 +53,7 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V4.1.0		| Fast PM        | Alex          | June 29, 2026      | Fixes PM delay (now only a few seconds) |
 | V4.2.0		| Sync Headers   | Alex          | June 29, 2026      | Updates the way serial and SD are written to be the same and adds the firmware and pod name version to both |
 | V4.2.1		| SD_ENABLED     | Percy         | July 24, 2026      | Adds SD_ENABLED for troubleshooting|
-| V4.2.2		| Sum26 Cal      | Percy         | August 5, 2026     | Incorporates calibrations for E8 & D2 for the CU Museum team from the summer calibration |
+| V4.2.2		| Sum26 Cal      | Percy         | August 5, 2026     | Incorporates calibrations for E8, K3, D2 & R8 (50% died tho) for the CU Museum team from the summer calibration |
 
 # Feature Request 
 * Long-term plans of adding config file
