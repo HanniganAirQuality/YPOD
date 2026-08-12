@@ -257,7 +257,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
     case 'R':
       switch (calID_number) { // Switch statement for number in ypodID
         case '8':
-          co_cal = ((0.0.000473967 * co) + 0.23839);
+          co_cal = ((0.000473967 * co) + 0.23839);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -494,6 +494,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           break;
         default:
           co2_cal = co2; // Default = original signal
+      }
     case 'R':
       switch (calID_number) { // Switch statement for number in ypodID
         case '8':
