@@ -15,12 +15,12 @@
 
 #include <Arduino.h>
 
-#define CALIBRATE    0 // Embedded calibration
+#define CALIBRATE    1 // Embedded calibration
 
 #define SERIAL_ENABLED        1
 #define PMS_ENABLED           1
 #define QUAD_ENABLED          0 
-#define SD_ENABLED            0
+#define SD_ENABLED            1
 
 #define RTC_UPDATE            0 // IF you have to update RTC, please upload after with a 0
 
@@ -40,7 +40,7 @@ const int PM_TX = 3;
 // SD Card Settings
 const int SD_CS = 4;
 
-const char ypodID[] = "YPODE8";
+const char ypodID[] = "YPODR8";
   const char calID_letter = ypodID[4]; // Letter for calID
   const char calID_number = ypodID[5]; // Number for calID
 
