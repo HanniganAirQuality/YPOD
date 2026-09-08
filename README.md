@@ -54,6 +54,7 @@ Thanks to Izzy for this suggestion! Here we will be tracking each version of the
 | V4.2.0		| Sync Headers   | Alex          | June 29, 2026      | Updates the way serial and SD are written to be the same and adds the firmware and pod name version to both |
 | V4.2.1		| SD_ENABLED     | Percy         | July 24, 2026      | Adds SD_ENABLED for troubleshooting|
 | V4.2.2		| Sum26 Cal      | Percy         | August 5, 2026     | Incorporates calibrations for E8, K3, D2 & R8 (50% died tho) for the CU Museum team from the summer calibration |
+| V4.3.0		| BME680 Spencer | Percy         | September 8, 2026  | Adding BME680 code for the Fire-IQ YPODs that run Spencer's shield |
 
 # Feature Request 
 * Long-term plans of adding config file
