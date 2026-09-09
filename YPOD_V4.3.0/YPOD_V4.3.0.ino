@@ -122,8 +122,8 @@ void setup() {
   #endif                 //RTC_UPDATE
     ads_module.begin();  //Initialize ads_module (creates objects in .cpp)  
     #if BME680          //Initializes BME 680 
-      bme_sensor.begin();
-      if (!bme_sensor.begin()) {
+      bme_sensor.begin(B6_ADDR);
+      if (!bme_sensor.begin(B6_ADDR)) {
         Serial.println(F("Could not find a valid BME680 sensor, check wiring!"));
         while (1);
       } //if(!bme_sensor.begin(BME680_CS))
