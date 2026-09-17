@@ -131,7 +131,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
           co_cal = ((0.00107 * co) + (-0.14491 * rh) + 5.75429);
           break;
         case '4':
-          co_cal = ((0.00117 * co) + (-0.13572 * rh) + 5.46203);
+          co_cal = ((0.000816055 * co) + (-0.628235));
           break;
         default:
           co_cal = co; // Default = original signal
@@ -373,7 +373,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (1.22328 * co2) + (0.16343 * rh) + (-1.40132 * t) - 15.57537;
           break;
         case '4':
-          co2_cal = (1.09864 * co2) + (0.57402 * rh) + (0.46539 * t) - 89.00339;
+          co2_cal = (4.55935 * co2) + (-105.446 * sqrt(co2)) + 980.383;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -1048,8 +1048,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '2':
           voc_cal = (0.08573 * fig2600) + (0.29712 * fig2602) - (6.74396 * t) - (3.74510 * rh) - 79.30350;
           break;
-        case '4':
-          voc_cal = (0.14993 * fig2600) + (0.76761 * fig2602) - (12.50848 * t) - (10.55894 * rh) - 60.76884;
+        case '4'://METHANE
+          voc_cal = (-0.902638 * fig2600) + (0.000299265 * sq(fig2600)) + 2727.50;
           break;
         default:
           voc_cal = 1; // Default = original signal
