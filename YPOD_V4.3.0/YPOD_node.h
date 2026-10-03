@@ -41,7 +41,7 @@ const int PM_TX = 3;
 // SD Card Settings
 const int SD_CS = 4;
 
-const char ypodID[] = "YPODF4";
+const char ypodID[] = "YPODT5";
   const char calID_letter = ypodID[4]; // Letter for calID
   const char calID_number = ypodID[5]; // Number for calID
 

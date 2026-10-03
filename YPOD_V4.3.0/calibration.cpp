@@ -176,7 +176,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
           co_cal = ((0.00105 * co) + (-0.14761 * rh) + 4.78947);
           break;
         case '6':
-          co_cal = ((0.00112 * co) + (-0.07675 * rh) + 1.95190);
+          co_cal = ((0.000458691 * co) + 0.102502);
           break;
         case '2':
           co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
@@ -188,7 +188,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
           co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
           break;
         case '5':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+          co_cal = ((0.000618324 * co) + -0.161696);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -424,13 +424,13 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (0.71347 * co2) + (0.68218 * rh) + (0.98741 * t) + 37.41322;
           break;
         case '6':
-          co2_cal = (0.77203 * co2) + (0.68218 * rh) + (0.98741 * t) - 41.27804;
+          co2_cal = ((3.2524 * co2) + (-72.5218 * sqrt(co2)) + 711.659);
           break;
         case '3':
           co2_cal = (1.09692 * co2) + (0.03911 * rh) + (0.06376 * t) - 46.68639;
           break;
         case '5':
-          co2_cal = (1.09692 * co2) + (0.03911 * rh) + (0.06376 * t) - 46.68639;
+          co2_cal = ((5.51758 * co2) + (-159.422 * sqrt(co2)) + 1495.2);
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -1099,14 +1099,14 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '1':
           voc_cal = (0.24462 * fig2600) + (0.02381 * fig2602) - (8.01323 * t) - (5.18922 * rh) + 98.25879;
           break;
-        case '6':
-          voc_cal = (0.34719 * fig2600) + (0.02180 * fig2602) - (7.0645 * t) - (1.04831 * rh) - 34.33277;
+        case '6'://METHANE
+          voc_cal = ((-0.118872 * fig2600) + (0.0000261018 * sq(fig2600)) + 2181.49);
           break;
         case '3':
           voc_cal = (0.25902 * fig2600) + (0.10550 * fig2602) - (8.69664 * t) - (3.37784 * rh) - 33.94685;
           break;
-        case '5':
-          voc_cal = (0.25902 * fig2600) + (0.10550 * fig2602) - (8.69664 * t) - (3.37784 * rh) - 33.94685;
+        case '5'://METHANE
+          voc_cal = ((-0.0763529 * fig2600) + (0.0000409808 * sq(fig2600)) + 2082.05);
           break;
         default:
           voc_cal = 1; // Default = original signal
