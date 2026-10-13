@@ -3,7 +3,7 @@
  * @brief   header file for calibration.cpp, stores struct and class.
  *          Conditionals for which variables to run calibration on  
  *
- * @author  Chiara Pesxe, chiara.pesce@colorado.edu
+ * @author  Chiara Pesce, chiara.pesce@colorado.edu
  * @date    September 30, 2025
  * @log     Adding VOC Calibration and negative value handling 
 ******************************************************************************/

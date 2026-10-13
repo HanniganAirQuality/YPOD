@@ -118,6 +118,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
           break;
         case '1':
           co_cal = ((0.00112 * co) + (-0.07675 * rh) + 1.25783);
+          break;
         case '9':
           co_cal = ((0.000471372 * co) + (0.215808));
           break;
@@ -152,7 +153,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
     case 'Z':
       switch (calID_number) { // Switch statement for number in ypodID
         case '2':
-          co_cal = ((0.00123 * co) + (-0.13601 * rh) + 4.78696);
+          co_cal = ((0.000930762 * co) - 0.721443);
           break;
         case '3': 
           co_cal = ((0.00114 * co) + (-0.12002 * rh) + 4.42928);
@@ -397,7 +398,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'Z':
       switch (calID_number) { // Switch statement for number in ypodID
         case '2':
-          co2_cal = (1.03796 * co2) + (-0.77552 * rh) + (-0.36187 * t) - 134.25129;
+          co2_cal = (6.58878 * co2) + (-233.701 * sqrt(co2)) + 2465.49;
           break;
         case '3': 
           co2_cal = (1.22535 * co2) + (-0.05251 * rh) + (1.22153 * t) - 64.50792;
@@ -498,6 +499,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
         default:
           co2_cal = co2; // Default = original signal
       }
+      break;
     case 'R':
       switch (calID_number) { // Switch statement for number in ypodID
         case '8':
@@ -506,6 +508,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
         default:
           co2_cal = co2; // Default = original signal
       }
+      break;
     default:
       #if SERIAL_ENABLED
         // Serial.println("No CO2 calibration data for this pod.");
@@ -1075,8 +1078,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;  
     case 'Z':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '2':
-          voc_cal = (0.11951 * fig2600) + (0.11722 * fig2602) - (10.51041 * t) - (3.26410 * rh) - 6.68153;
+        case '2'://METHANE
+          voc_cal = (-0.668306 * fig2600) + (0.00018269 * sq(fig2600)) + 2661.32;
           break;
         case '3':
           voc_cal = (0.06341 * fig2600) + (0.12616 * fig2602) - (4.16462 * t) + (0.45900 * rh) - 166.55003;
@@ -1177,6 +1180,7 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         default:
           voc_cal = 1; // Default = original signal
       }
+      break;
     case 'R':
       switch (calID_number) { // Switch statement for number in ypodID
         case '8': //METHANE
@@ -1185,6 +1189,7 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         default:
           voc_cal = 1; // Default = original signal
       }
+      break;
     default:
       #if Serial_Enabled
         // Serial.println("No VOC calibration data for this pod.");
