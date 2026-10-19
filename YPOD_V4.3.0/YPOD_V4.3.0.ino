@@ -338,7 +338,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
   #if SHT25
   // Temperature
     #if CALIBRATE                                                                                                                 // Calls calibration eqn for temperature
-      float tempt = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).T_;  // Temp variable to store object
+      float tempt = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).T_;  // Temp variable to store object
       output.print(tempt);
     #else
       output.print(temperature_SHT25);  // Default - no calibration
@@ -347,7 +347,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
     output.print(",");
     // Relative humidity
     #if CALIBRATE                                                                                                                   // Calls calibration eqn for relative humidity
-      float temprh = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).RH_;  // Temp varibale to store object
+      float temprh = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).RH_;  // Temp varibale to store object
       output.print(temprh);
     #else
       output.print(humidity_SHT25);     // Default - no calibration
@@ -362,7 +362,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
 
   // Figs
   #if CALIBRATE                                                                                                                 // calls calibration eqn for voc
-    int tvoc = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).TVOC_;  // Temp varibale to store object
+    int tvoc = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).TVOC_;  // Temp varibale to store object
     output.print(tvoc);
   #endif
   output.print(",");
@@ -381,7 +381,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
 
   // CO
   #if CALIBRATE                                                                                                                   // Calls calibraiton eqn for CO
-    float tempco = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_;  // Temp variable to store object
+    float tempco = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO_;  // Temp variable to store object
     output.print(tempco);
   #endif
   output.print(",");
@@ -393,7 +393,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
 
   // CO2
   #if CALIBRATE                                                                                                                   // Calls calibration eqn for CO2
-    int tempco2 = cal.calibrate(ads_data.CO_ch1, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO2_;  // Temp variable to store object
+    int tempco2 = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO2_;  // Temp variable to store object
     output.print(tempco2);
   #else
     output.print(CO2);  // Default - no calibration

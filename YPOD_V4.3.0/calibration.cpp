@@ -17,16 +17,16 @@
  *    @brief calls calibration functions and returns struct w/ variables
  */
 /**************************************************************************/
-calOutput Cal::calibrate (uint16_t co, float co2, float rh, float t, uint16_t fig2600, uint16_t fig2602) {
+calOutput Cal::calibrate (uint16_t co, uint16_t noise, float co2, float rh, float t, uint16_t fig2600, uint16_t fig2602) {
   calOutput out; // creates an isntance of calOutput struct
   #if CALIBRATE_CO // Conditional
-    out.CO_ = calibrate_co (co, rh);
+    out.CO_ = calibrate_co (co, noise, rh);
   #endif
   #if CALIBRATE_CO2 // Conditional
     out.CO2_ = calibrate_co2 (co2, rh, t);
   #endif
   #if CALIBRATE_T // Conditional
-    out.T_ = calibrate_t (t);
+    out.T_ = calibrate_t(t);
   #endif
   #if CALIBRATE_RH // Conditional
     out.RH_ = calibrate_rh (rh);
@@ -42,7 +42,7 @@ calOutput Cal::calibrate (uint16_t co, float co2, float rh, float t, uint16_t fi
  *    @brief  Stores the CO calibration equations
  */
 /**************************************************************************/
-int Cal::calibrate_co (uint16_t co, float rh) {
+int Cal::calibrate_co (uint16_t co, uint16_t noise, float rh) {
   int co_cal; // Stores calibrated CO value
   switch (calID_letter) { // Switch statememnt for letter in ypodID
     case 'U':
@@ -59,12 +59,12 @@ int Cal::calibrate_co (uint16_t co, float rh) {
         case '2':
           co_cal = ((0.00117 * co) + (-0.12668 * rh) + 5.09077);
           break;
-        case '1':
-          co_cal = ((0.00107 * co) + (-0.12473 * rh) + 4.53371);
+        case '1': //Include Noise Factor
+          co_cal = (-0.00147948 * noise + (0.000373685 * co) + 5.07628);
           break;
-        case '5':
-          co_cal = ((0.00680 * co) + (-0.07564 * rh) + 2.55893);
-          break;
+        case '5': //Include Noise Factor
+          co_cal = (-0.00174219 * noise + (0.0187948 * co) + -7.26234);
+          break; 
         case '3':
           co_cal = ((0.00093 * co) + (-0.07671 * rh) + 2.07106);
           break;
@@ -80,9 +80,6 @@ int Cal::calibrate_co (uint16_t co, float rh) {
         case '5':
           co_cal = ((0.000509267 * co) + (-0.143343));
           break; 
-        case '2':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
-          break;
         case '3':
           co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
           break;
@@ -96,7 +93,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
     case 'M':
       switch (calID_number) { // Switch statement for number in ypodID
         case '6':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+          co_cal = ((0.000437432 * co) + (0.254876));
           break;
         default:
           co_cal = co; // Default = original signal
@@ -104,8 +101,8 @@ int Cal::calibrate_co (uint16_t co, float rh) {
       break;
     case 'H':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '1':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+        case '1': //Include Noise Factor
+          co_cal = (-0.00175449 * noise + (0.000470332 * co) + 5.59755);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -116,8 +113,8 @@ int Cal::calibrate_co (uint16_t co, float rh) {
         case '0':
           co_cal = ((0.00108 * co) + (-0.12966 * rh) + 4.89108);
           break;
-        case '1':
-          co_cal = ((0.00112 * co) + (-0.07675 * rh) + 1.25783);
+        case '1'://Include Noise Factor
+          co_cal = (-0.00144829 * noise + (0.000486219 * co) + 4.75306);
           break;
         case '9':
           co_cal = ((0.000471372 * co) + (0.215808));
@@ -128,8 +125,8 @@ int Cal::calibrate_co (uint16_t co, float rh) {
       break;
     case 'F':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '2':
-          co_cal = ((0.00107 * co) + (-0.14491 * rh) + 5.75429);
+        case '2'://Include Noise Factor
+          co_cal = (-0.0016458 * noise + (0.000425477 * co) + 5.41702);
           break;
         case '4':
           co_cal = ((0.000816055 * co) + (-0.628235));
@@ -156,7 +153,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
           co_cal = ((0.000930762 * co) - 0.721443);
           break;
         case '3': 
-          co_cal = ((0.00114 * co) + (-0.12002 * rh) + 4.42928);
+          co_cal = ((0.000694492 * co) - 0.4909);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -206,11 +203,14 @@ int Cal::calibrate_co (uint16_t co, float rh) {
       break;
     case 'K':
       switch (calID_number) { // Switch statement for number in ypodID
+        case '1':
+          co_cal = ((0.000526590 * co) + 0.145893);
+          break;
         case '2':
           co_cal = ((0.00104 * co) + (-0.03188 * rh) + 2.48679);
           break;
-        case '3':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+        case '3'://Include Noise Factor
+          co_cal = (-0.0017354 * noise + (0.000375311 * co) + 5.7147);
           break;
         case '4':
           co_cal = ((0.000482931 * co) + 0.0197627);
@@ -221,8 +221,8 @@ int Cal::calibrate_co (uint16_t co, float rh) {
       break;
     case 'L':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '1':
-          co_cal = ((0.00107 * co) + (-0.11803 * rh) + 3.62155);
+        case '1'://Include Noise Factor
+          co_cal = (-0.0014153 * noise + (0.00068217 * co) + 4.2126);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -240,7 +240,7 @@ int Cal::calibrate_co (uint16_t co, float rh) {
     case 'G':
       switch (calID_number) { // Switch statement for number in ypodID
         case '2':
-          co_cal = ((0.00115 * co) + (-0.11353 * rh) + 3.00400);
+          co_cal = ((0.000690797 * co) + -0.470575);
           break;
         default:
           co_cal = co; // Default = original signal
@@ -305,10 +305,10 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (0.78940 * co2) + (0.02548 * rh) + (1.48442 * t) - 81.97484;
           break;
         case '1':
-          co2_cal = (0.58073 * co2) + (0.19558 * rh) + (-2.26283 * t) + 131.85519;
+          co2_cal = (-4.94891 * co2) + (244.931 * sqrt(co2)) + -2444.59;
           break;
         case '5':
-          co2_cal = (1.09692 * co2) + (0.03911 * rh) + (0.06376 * t) - 46.68639;
+          co2_cal = (-4.77898 * co2) + (230.883 * sqrt(co2)) + -2201.11;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -323,7 +323,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (2.23607 * co2) + (-49.1908 * sqrt(co2)) + 554.44;
           break;
         case '2':
-          co2_cal = (0.50596 * co2) + (0.35266 * rh) + (1.00766 * t) - 25.15380;
+          co2_cal = (2.02172 * co2) + (-45.2756 * sqrt(co2)) + 586.762;
           break;
         case '6':
           co2_cal = (0.94356 * co2) + (0.53461 * rh) + (1.72155 * t) - 90.12135;
@@ -341,7 +341,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'M':
       switch (calID_number) { // Switch statement for number in ypodID
         case '6':
-          co2_cal = (1.09692 * co2) + (0.03911 * rh) + (0.06376 * t) - 46.68639;
+          co2_cal = (7.75456 * co2) + (-238.755 * sqrt(co2)) + 2206.92;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -350,7 +350,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'H':
       switch (calID_number) { // Switch statement for number in ypodID
         case '1':
-          co2_cal = (1.09692 * co2) + (0.03911 * rh) + (0.06376 * t) - 46.68639;
+          co2_cal = (-0.562765 * co2) + (46.2971 * sqrt(co2)) + -247.324;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -362,7 +362,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (1.03612 * co2) + (1.17989 * rh) + (0.85961 * t) - 186.12921;
           break;
         case '1':
-          co2_cal = (0.37740 * co2) + (-0.10422 * rh) + (-2.27307 * t) + 223.94961;
+          co2_cal = (1.84398 * co2) + (-28.3764 * sqrt(co2)) + 344.909;
           break;
         case '9':
           co2_cal = (19.4067 * co2) + (-642.18 * sqrt(co2)) + 5740.64;
@@ -374,7 +374,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'F':
       switch (calID_number) { // Switch statement for number in ypodID
         case '2':
-          co2_cal = (1.22328 * co2) + (0.16343 * rh) + (-1.40132 * t) - 15.57537;
+          co2_cal = (-1.64405 * co2) + (83.7334 * sqrt(co2)) + -401.619;
           break;
         case '4':
           co2_cal = (4.55935 * co2) + (-105.446 * sqrt(co2)) + 980.383;
@@ -401,7 +401,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (6.58878 * co2) + (-233.701 * sqrt(co2)) + 2465.49;
           break;
         case '3': 
-          co2_cal = (1.22535 * co2) + (-0.05251 * rh) + (1.22153 * t) - 64.50792;
+          co2_cal = (4.31232 * co2) + (-110.36 * sqrt(co2)) + 1091.88;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -451,8 +451,11 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
       break;
     case 'K':
       switch (calID_number) { // Switch statement for number in ypodID
+        case '1':
+          co2_cal = (7.50096 * co2) + (-171.562 * sqrt(co2)) + 1424.42;
+          break;
         case '3':
-          co2_cal = (1.09907 * co2) + (-0.14214 * rh) + (-1.74229 * t) + 98.61317;
+          co2_cal = (2.66501 * co2) + (-29.0544 * sqrt(co2)) + 524.144;
           break;
         case '2':
           co2_cal = (0.35536 * co2) + (0.79715 * rh) + (0.53309 * t) + 87.70961;
@@ -467,7 +470,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'L':
       switch (calID_number) { // Switch statement for number in ypodID
         case '1':
-          co2_cal = (0.26675 * co2) + (0.40967 * rh) + (-0.44070 * t) + 128.64243;
+          co2_cal = (-1.46287 * co2) + (76.3163 * sqrt(co2)) + -472.462;
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -485,7 +488,7 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
     case 'G':
       switch (calID_number) { // Switch statement for number in ypodID
         case '2':
-          co2_cal = (1.11746 * co2) + (0.14695 * rh) + (0.74198 * t) - 272.54046;
+          co2_cal = ((2.20067 * co2) + (-45.5458 * sqrt(co2)) + 451.97);
           break;
         default:
           co2_cal = co2; // Default = original signal
@@ -982,14 +985,14 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '6':
           voc_cal = (0.08350 * fig2600) + (0.09610 * fig2602) - (7.00497 * t) - (1.13425 * rh) - 26.52803;
           break;
-        case '1':
-          voc_cal = (0.32267 * fig2600) + (0.01340 * fig2602) - (8.07775 * t) - (3.84592 * rh) - 108.73772;
+        case '1'://METHANE
+          voc_cal = (0.061028 * fig2600) + (0.0000452118 * sq(fig2600)) + 1889.65;
           break;
         case '3':
           voc_cal = (0.34530 * fig2600) - (0.02789 * fig2602) - (7.89486 * t) - (2.10618 * rh) - 123.04054;
           break;
-        case '5':
-          voc_cal = (0.23609 * fig2600) - (0.01862 * fig2602) - (3.15310 * t) - (2.22867 * rh) + 64.46123;
+        case '5'://METHANE
+          voc_cal = (0.197263 * fig2600) + (0.00000779416 * sq(fig2600)) + 1729.19;
           break;
         default:
           voc_cal = 1; // Default = original signal
@@ -1003,8 +1006,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '5'://METHANE
           voc_cal = (-0.559647 * fig2600) + (0.000625833 * sq(fig2600)) + 2173.10;
           break;
-        case '2':
-          voc_cal = (-0.00280 * fig2600) + (0.30710 * fig2602) - (1.94186 * t) + (0.02974 * rh) - 140.82678;
+        case '2'://METHANE
+          voc_cal = (0.189332 * fig2600) + (0.00000829048 * sq(fig2600)) + 1733.98;
           break;
         case '6':
           voc_cal = (0.05183 * fig2600) + (0.32653 * fig2602) - (9.03121 * t) - (2.86512 * rh) + 31.39674;
@@ -1021,8 +1024,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'M':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '6':
-          voc_cal = (0.25902 * fig2600) + (0.10550 * fig2602) - (8.69664 * t) - (3.37784 * rh) - 33.94685;
+        case '6'://METHANE
+          voc_cal = (-0.578614 * fig2600) + (0.000113721 * sq(fig2600)) + 2785.16;
           break;
         default:
           voc_cal = 1; // Default = original signal
@@ -1030,8 +1033,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'H':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '1':
-          voc_cal = (0.25902 * fig2600) + (0.10550 * fig2602) - (8.69664 * t) - (3.37784 * rh) - 33.94685;
+        case '1'://METHANE
+          voc_cal = (0.159166 * fig2600) + (0.000000864988 * sq(fig2600)) + 1695.67;
           break;
         default:
           voc_cal = 1; // Default = original signal
@@ -1042,8 +1045,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '0':
           voc_cal = (0.10555 * fig2600) + (0.52609 * fig2602) - (10.08610 * t) - (8.4633 * rh) - 140.17887;
           break;
-        case '1':
-          voc_cal = (1.10572 * fig2600) + (0.04663 * fig2602) - (10.25925 * t) - (7.99611 * rh) + 94.73553;
+        case '1'://METHANE
+          voc_cal = (0.560671 * fig2600) + (-0.0000130556 * sq(fig2600)) + 1871.79;
           break;
         case '9'://METHANE
           voc_cal = (-0.541641 * fig2600) + (0.0000868594 * sq(fig2600)) + 2894.62;
@@ -1054,8 +1057,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'F':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '2':
-          voc_cal = (0.08573 * fig2600) + (0.29712 * fig2602) - (6.74396 * t) - (3.74510 * rh) - 79.30350;
+        case '2'://METHANE
+          voc_cal = (0.0526873 * fig2600) + (0.0000548131 * sq(fig2600)) + 1845.42;
           break;
         case '4'://METHANE
           voc_cal = (-0.902638 * fig2600) + (0.000299265 * sq(fig2600)) + 2727.50;
@@ -1081,8 +1084,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '2'://METHANE
           voc_cal = (-0.668306 * fig2600) + (0.00018269 * sq(fig2600)) + 2661.32;
           break;
-        case '3':
-          voc_cal = (0.06341 * fig2600) + (0.12616 * fig2602) - (4.16462 * t) + (0.45900 * rh) - 166.55003;
+        case '3'://METHANE
+          voc_cal = (-0.699267 * fig2600) + (0.000234151 * sq(fig2600)) + 2571.19;
           break;
         default:
           voc_cal = 1; // Default = original signal
@@ -1132,8 +1135,11 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'K':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '3':
-          voc_cal = (0.10336 * fig2600) + (0.16505 * fig2602) - (6.43139 * t) - (1.57642 * rh) - 63.34526;
+        case '1': //METHANE
+          voc_cal = (-0.637129 * fig2600) + (0.000161527 * sq(fig2600)) + 2677.52;
+          break;
+        case '3'://METHANE
+          voc_cal = (0.320599 * fig2600) + (-0.0000106905 * sq(fig2600)) + 1706.07;
           break;
         case '2':
           voc_cal = (0.12465 * fig2600) + (0.25099 * fig2602) - (11.69244 * t) - (8.85123 * rh) - 271.92746;
@@ -1147,8 +1153,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'L':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '1':
-          voc_cal = (0.06399 * fig2600) + (0.24491 * fig2602) - (11.73609 * t) - (8.63813 * rh) + 210.54627;
+        case '1'://METHANE
+          voc_cal = (0.062429 * fig2600) + (0.0000253738 * sq(fig2600)) + 1801.6;
           break;
         default:
           voc_cal = 1; // Default = original signal
@@ -1165,8 +1171,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
       break;
     case 'G':
       switch (calID_number) { // Switch statement for number in ypodID
-        case '2':
-          voc_cal = (0.15554 * fig2600) + (0.01399 * fig2602) - (11.80565 * t) - (5.22316 * rh) + 20.15178;
+        case '2'://METHANE
+          voc_cal = ((-0.755082 * fig2600) + (0.000150379 * sq(fig2600)) + 2997.84);
           break;
         default:
           voc_cal = 1; // Default = original signal

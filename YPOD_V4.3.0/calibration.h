@@ -28,10 +28,10 @@ struct calOutput { // sruct for which var to calibrate
 
 class Cal {
   public: // public variables
-    calOutput calibrate (uint16_t co, float co2, float rh, float t, uint16_t fig2600, uint16_t fig2602);
+    calOutput calibrate (uint16_t co, uint16_t noise, float co2, float rh, float t, uint16_t fig2600, uint16_t fig2602);
     
   private: // private variables
-    int calibrate_co (uint16_t co, float rh); 
+    int calibrate_co (uint16_t co, uint16_t noise, float rh); 
     int calibrate_co2 (float co2, float rh, float t);
     float calibrate_t (float t);
     float calibrate_rh (float rh);
