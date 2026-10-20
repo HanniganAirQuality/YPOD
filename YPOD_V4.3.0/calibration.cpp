@@ -137,6 +137,9 @@ int Cal::calibrate_co (uint16_t co, uint16_t noise, float rh) {
       break;
     case 'D':
       switch (calID_number) { // Switch statement for number in ypodID
+        case '6'://Include Noise Factor
+          co_cal = (-0.00150594 * noise + (0.000518011 * co) + 4.89046);
+          break;
         case '4':
           co_cal = ((0.00102 * co) + (-0.16957 * rh) + 5.30658);
           break;
@@ -179,8 +182,8 @@ int Cal::calibrate_co (uint16_t co, uint16_t noise, float rh) {
         case '2':
           co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
           break;
-        case '1':
-          co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
+        case '1'://Include Noise Factor
+          co_cal = (-0.00142065 * noise + (0.00039527 * co) + 4.71982);
           break;
         case '3':
           co_cal = ((0.00111 * co) + (-0.11678 * rh) + 4.11220);
@@ -391,6 +394,9 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
         case '4':
           co2_cal = (1.09476 * co2) + (-1.89513 * rh) + (-5.76502 * t) - 4.97449;
           break;
+        case '6':
+          co2_cal = (4.24279 * co2) + (-134.794 * sqrt(co2)) + 1489.17;
+          break;
         default:
           co2_cal = co2; // Default = original signal
       } 
@@ -422,10 +428,10 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           co2_cal = (1.20414 * co2) + (-0.54367 * rh) + (-1.09033 * t) - 71.13862;
           break;
         case '2':
-          co2_cal = (1.36979 * co2) + (-1.73881 * rh) + (4.56957 * t) - 390.66394;
+          co2_cal = (1.36979 * co2) + (-1.73881 * rh) + (4.56957 * t) + 628.022;
           break;
         case '1':
-          co2_cal = (0.71347 * co2) + (0.68218 * rh) + (0.98741 * t) + 37.41322;
+          co2_cal = ((2.48895 * co2) + (-44.459 * sqrt(co2)) + 711.659);
           break;
         case '6':
           co2_cal = ((3.2524 * co2) + (-72.5218 * sqrt(co2)) + 711.659);
@@ -1075,6 +1081,9 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '4':
           voc_cal = (0.28396 * fig2600) + (0.12025 * fig2602) - (28.22628 * t) - (19.14735 * rh) + 558.10205;
           break;
+        case '6': //METHANE
+          voc_cal = (0.088112 * fig2600) + (0.0000351718 * sq(fig2600)) + 1798.27;
+          break;
         default:
           voc_cal = 1; // Default = original signal
       }
@@ -1108,8 +1117,8 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
         case '2':
           voc_cal = (0.16532 * fig2600) + (0.29906 * fig2602) - (22.90767 * t) - (14.56504 * rh) - 333.32130;
           break;
-        case '1':
-          voc_cal = (0.24462 * fig2600) + (0.02381 * fig2602) - (8.01323 * t) - (5.18922 * rh) + 98.25879;
+        case '1'://METHANE
+          voc_cal = ((0.236544 * fig2600) + (-0.0000110424 * sq(fig2600)) + 1867.89);
           break;
         case '6'://METHANE
           voc_cal = ((-0.118872 * fig2600) + (0.0000261018 * sq(fig2600)) + 2181.49);
