@@ -116,6 +116,9 @@ int Cal::calibrate_co (uint16_t co, uint16_t noise, float rh) {
         case '1'://Include Noise Factor
           co_cal = (-0.00144829 * noise + (0.000486219 * co) + 4.75306);
           break;
+        case '6'://Include Noise Factor
+          co_cal = (-0.00149528 * noise + (0.00049518 * co) + 4.84432);
+          break;
         case '9':
           co_cal = ((0.000471372 * co) + (0.215808));
           break;
@@ -366,6 +369,9 @@ int Cal::calibrate_co2 (float co2, float rh, float t) {
           break;
         case '1':
           co2_cal = (1.84398 * co2) + (-28.3764 * sqrt(co2)) + 344.909;
+          break;
+        case '6':
+          co2_cal = (4.25252 * co2) + (-141.285 * sqrt(co2)) + 1640.01;
           break;
         case '9':
           co2_cal = (19.4067 * co2) + (-642.18 * sqrt(co2)) + 5740.64;
@@ -1053,6 +1059,9 @@ int Cal::calibrate_voc (uint16_t fig2600, uint16_t fig2602, float rh, float t) {
           break;
         case '1'://METHANE
           voc_cal = (0.560671 * fig2600) + (-0.0000130556 * sq(fig2600)) + 1871.79;
+          break;
+        case '6'://METHANE
+          voc_cal = (0.146439 * fig2600) + (0.00000255377 * sq(fig2600)) + 1695.66;
           break;
         case '9'://METHANE
           voc_cal = (-0.541641 * fig2600) + (0.0000868594 * sq(fig2600)) + 2894.62;
