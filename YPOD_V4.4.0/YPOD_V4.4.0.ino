@@ -179,6 +179,7 @@ void loop() {
   double P = -99;
   float temperature_SHT25 = 0;
   float humidity_SHT25 = 0;
+  // Serial.begin(9600);
 
   #if PMS_ENABLED
     pms.clearInput();
@@ -395,7 +396,7 @@ void printOutput(Print &output, bool pm_returned, double T, double P, float temp
   #if CALIBRATE                                                                                                                   // Calls calibration eqn for CO2
     int tempco2 = cal.calibrate(ads_data.CO_ch1, ads_data.CO_ch2, CO2, humidity_SHT25, temperature_SHT25, ads_data.Fig1, ads_data.Fig2).CO2_;  // Temp variable to store object
     output.print(tempco2);
-  #else
+  #endif
   output.print(",");
   output.print(CO2);  // Default - no calibration
   delay(100);
